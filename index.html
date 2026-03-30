@@ -126,6 +126,10 @@
                 <div class="card p-4 kpi-card"><div class="kpi-label">Net ROI %</div><div class="kpi-value" id="kpi-roi">0%</div></div>
                 <div class="card p-4 kpi-card"><div class="kpi-label">Total Clicks</div><div class="kpi-value" id="kpi-clicks">0</div></div>
             </div>
+            <div class="card p-6 mb-8">
+                <h2 class="text-lg font-semibold mb-4" style="color: var(--pl-monday);">Weekly Revenue Trend (3-Week)</h2>
+                <div style="position: relative; height: 280px;"><canvas id="revenueTrendChart"></canvas></div>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <div class="card p-6">
                     <h2 class="text-lg font-semibold mb-4" style="color: var(--pl-monday);">Commission vs Cost (Top 15)</h2>
@@ -211,6 +215,53 @@
         let currentWeek = 'week3';
         let chartCommission = null;
         let chartROI = null;
+        let chartRevenueTrend = null;
+
+        function buildRevenueTrend() {
+            const weeks = ['week1', 'week2', 'week3'];
+            const labels = ['Mar 9-15', 'Mar 16-22', 'Mar 23-29'];
+            const commissions = [], adSpends = [], orders = [], netProfits = [];
+            weeks.forEach(w => {
+                const wd = getWeekData(w);
+                let comm = 0, spend = 0, ord = 0;
+                Object.values(wd.b2b).forEach(s => { comm += (s.commissionGbp || 0) * GBP_TO_AED; ord += (s.orders || 0); });
+                Object.values(wd.ads).forEach(s => { spend += (s.cost || 0); });
+                commissions.push(Math.round(comm));
+                adSpends.push(Math.round(spend));
+                orders.push(ord);
+                netProfits.push(Math.round(comm - spend));
+            });
+            return { labels, commissions, adSpends, orders, netProfits };
+        }
+
+        function renderRevenueTrend() {
+            if (chartRevenueTrend) chartRevenueTrend.destroy();
+            const t = buildRevenueTrend();
+            const commGrowth = t.commissions[1] > 0 ? ((t.commissions[2] - t.commissions[1]) / t.commissions[1] * 100).toFixed(1) : 0;
+            chartRevenueTrend = new Chart(document.getElementById('revenueTrendChart'), {
+                type: 'line',
+                data: {
+                    labels: t.labels,
+                    datasets: [
+                        { label: 'Commission (AED)', data: t.commissions, borderColor: '#79E2FF', backgroundColor: 'rgba(121,226,255,0.1)', fill: true, tension: 0.3, pointRadius: 6, pointBackgroundColor: '#79E2FF', borderWidth: 3 },
+                        { label: 'Ad Spend (AED)', data: t.adSpends, borderColor: '#C7F88A', backgroundColor: 'rgba(199,248,138,0.1)', fill: true, tension: 0.3, pointRadius: 6, pointBackgroundColor: '#C7F88A', borderWidth: 3 },
+                        { label: 'Net Profit (AED)', data: t.netProfits, borderColor: '#00A5D3', backgroundColor: 'rgba(0,165,211,0.08)', fill: false, tension: 0.3, pointRadius: 6, pointBackgroundColor: '#00A5D3', borderWidth: 2, borderDash: [5, 5] },
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#6B9AAB', font: { size: 12 } } },
+                        tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()} AED` } },
+                        subtitle: { display: true, text: `Commission W/W: ${commGrowth > 0 ? '+' : ''}${commGrowth}%`, color: commGrowth >= 0 ? '#C7F88A' : '#ef4444', font: { size: 13, weight: 600 }, padding: { bottom: 10 } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#6B9AAB' }, grid: { color: 'rgba(26,53,64,0.5)' } },
+                        y: { ticks: { color: '#6B9AAB', callback: v => v.toLocaleString() }, grid: { color: 'rgba(26,53,64,0.5)' } }
+                    }
+                }
+            });
+        }
 
         const customerData = {"months": ["2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03"], "countryTotals": {"United Kingdom": 2152, "USA": 159, "United Arab Emirates": 25, "Australia": 25, "France": 21, "Germany": 17, "Saudi Arabia": 16, "Canada": 16, "Netherlands": 15, "Switzerland": 15, "Israel": 14, "Ireland": 14, "Spain": 12, "Brazil": 9, "Italy": 9, "New Zealand": 8, "Belgium": 8, "Sweden": 7, "Turkey": 7, "Poland": 7, "India": 7, "Greece": 7, "Mexico": 6, "South Africa": 6, "Singapore": 6, "Taiwan": 6, "Ukraine": 5, "Malta": 5, "Hong Kong": 5, "Kuwait": 5, "Romania": 4, "Argentina": 4, "Finland": 4, "Qatar": 3, "Denmark": 3, "China": 3, "Bulgaria": 3, "Lithuania": 3, "Japan": 3, "Cyprus": 3, "Austria": 3, "Georgia": 2, "Lebanon": 2, "Azerbaijan": 2, "Thailand": 2, "Burkina Faso": 2, "Portugal": 2, "Kenya": 1, "Serbia": 1, "Bahrain": 1}, "countryMonthly": {"United Kingdom": {"2025-06": 3, "2025-07": 134, "2025-08": 109, "2025-09": 116, "2025-10": 151, "2025-11": 437, "2025-12": 510, "2026-01": 283, "2026-02": 162, "2026-03": 247}, "USA": {"2025-06": 1, "2025-07": 5, "2025-08": 2, "2025-09": 8, "2025-10": 14, "2025-11": 33, "2025-12": 20, "2026-01": 22, "2026-02": 15, "2026-03": 39}, "United Arab Emirates": {"2025-06": 4, "2025-07": 0, "2025-08": 3, "2025-09": 1, "2025-10": 1, "2025-11": 8, "2025-12": 2, "2026-01": 0, "2026-02": 2, "2026-03": 4}, "Australia": {"2025-06": 0, "2025-07": 0, "2025-08": 3, "2025-09": 3, "2025-10": 5, "2025-11": 4, "2025-12": 1, "2026-01": 5, "2026-02": 1, "2026-03": 3}, "France": {"2025-06": 0, "2025-07": 1, "2025-08": 1, "2025-09": 1, "2025-10": 1, "2025-11": 6, "2025-12": 1, "2026-01": 1, "2026-02": 6, "2026-03": 3}, "Germany": {"2025-06": 0, "2025-07": 0, "2025-08": 0, "2025-09": 2, "2025-10": 0, "2025-11": 1, "2025-12": 3, "2026-01": 5, "2026-02": 2, "2026-03": 4}, "Saudi Arabia": {"2025-06": 1, "2025-07": 2, "2025-08": 0, "2025-09": 1, "2025-10": 2, "2025-11": 3, "2025-12": 3, "2026-01": 2, "2026-02": 2, "2026-03": 0}, "Canada": {"2025-06": 0, "2025-07": 1, "2025-08": 0, "2025-09": 0, "2025-10": 0, "2025-11": 5, "2025-12": 0, "2026-01": 3, "2026-02": 2, "2026-03": 5}, "Netherlands": {"2025-06": 0, "2025-07": 1, "2025-08": 0, "2025-09": 1, "2025-10": 0, "2025-11": 1, "2025-12": 7, "2026-01": 2, "2026-02": 2, "2026-03": 1}, "Switzerland": {"2025-06": 0, "2025-07": 1, "2025-08": 2, "2025-09": 1, "2025-10": 0, "2025-11": 2, "2025-12": 4, "2026-01": 2, "2026-02": 0, "2026-03": 3}, "Israel": {"2025-06": 0, "2025-07": 1, "2025-08": 1, "2025-09": 1, "2025-10": 5, "2025-11": 1, "2025-12": 1, "2026-01": 1, "2026-02": 1, "2026-03": 2}, "Ireland": {"2025-06": 0, "2025-07": 2, "2025-08": 2, "2025-09": 2, "2025-10": 0, "2025-11": 0, "2025-12": 1, "2026-01": 2, "2026-02": 1, "2026-03": 4}, "Spain": {"2025-06": 0, "2025-07": 2, "2025-08": 2, "2025-09": 1, "2025-10": 0, "2025-11": 4, "2025-12": 0, "2026-01": 0, "2026-02": 0, "2026-03": 3}, "Brazil": {"2025-06": 0, "2025-07": 1, "2025-08": 0, "2025-09": 1, "2025-10": 1, "2025-11": 2, "2025-12": 0, "2026-01": 2, "2026-02": 2, "2026-03": 0}, "Italy": {"2025-06": 0, "2025-07": 2, "2025-08": 0, "2025-09": 0, "2025-10": 1, "2025-11": 0, "2025-12": 1, "2026-01": 1, "2026-02": 2, "2026-03": 2}}, "countryGrowth": {"Saudi Arabia": {"first_half": 6, "second_half": 10, "growth": 66.66666666666666}, "United Arab Emirates": {"first_half": 9, "second_half": 16, "growth": 77.77777777777779}, "United Kingdom": {"first_half": 513, "second_half": 1639, "growth": 219.49317738791424}, "Israel": {"first_half": 8, "second_half": 6, "growth": -25.0}, "Ireland": {"first_half": 6, "second_half": 8, "growth": 33.33333333333333}, "Ukraine": {"first_half": 2, "second_half": 3, "growth": 50.0}, "USA": {"first_half": 30, "second_half": 129, "growth": 330.0}, "Mexico": {"first_half": 1, "second_half": 5, "growth": 400.0}, "Spain": {"first_half": 5, "second_half": 7, "growth": 40.0}, "Netherlands": {"first_half": 2, "second_half": 13, "growth": 550.0}, "New Zealand": {"first_half": 5, "second_half": 3, "growth": -40.0}, "Australia": {"first_half": 11, "second_half": 14, "growth": 27.27272727272727}, "Switzerland": {"first_half": 4, "second_half": 11, "growth": 175.0}, "Malta": {"first_half": 3, "second_half": 2, "growth": -33.33333333333333}, "Brazil": {"first_half": 3, "second_half": 6, "growth": 100.0}, "Italy": {"first_half": 3, "second_half": 6, "growth": 100.0}, "Hong Kong": {"first_half": 3, "second_half": 2, "growth": -33.33333333333333}, "Sweden": {"first_half": 1, "second_half": 6, "growth": 500.0}, "South Africa": {"first_half": 1, "second_half": 5, "growth": 400.0}, "France": {"first_half": 4, "second_half": 17, "growth": 325.0}, "Canada": {"first_half": 1, "second_half": 15, "growth": 1400.0}, "Belgium": {"first_half": 2, "second_half": 6, "growth": 200.0}, "Singapore": {"first_half": 1, "second_half": 5, "growth": 400.0}, "Turkey": {"first_half": 1, "second_half": 6, "growth": 500.0}, "Kuwait": {"first_half": 5, "second_half": 0, "growth": -100.0}, "Germany": {"first_half": 2, "second_half": 15, "growth": 650.0}, "Poland": {"first_half": 4, "second_half": 3, "growth": -25.0}, "Taiwan": {"first_half": 2, "second_half": 4, "growth": 100.0}, "India": {"first_half": 1, "second_half": 6, "growth": 500.0}, "Greece": {"first_half": 1, "second_half": 6, "growth": 500.0}}, "repeatCustomers": [{"email_hash": "ann***hotmail.com", "name": "Anna Kennedy", "bookings": 4, "countries": ["USA"], "dates": ["04/01/2026", "04/01/2026", "04/01/2026", "04/01/2026"]}, {"email_hash": "mon***gmail.com", "name": "Moneera AlQuloshi", "bookings": 3, "countries": ["Kuwait"], "dates": ["18/10/2025", "18/10/2025", "18/10/2025"]}, {"email_hash": "son***btinternet.com", "name": "Sonya Sewell", "bookings": 2, "countries": ["United Kingdom"], "dates": ["20/07/2025", "20/07/2025"]}, {"email_hash": "jdm***aol.com", "name": "Mike Smith", "bookings": 2, "countries": ["United Kingdom"], "dates": ["02/09/2025", "02/09/2025"]}, {"email_hash": "ale***gmail.com", "name": "Alec Cooper", "bookings": 2, "countries": ["United Kingdom"], "dates": ["11/08/2025", "11/08/2025"]}, {"email_hash": "lih***fbclawyers.com", "name": "Tal Michal", "bookings": 2, "countries": ["Israel"], "dates": ["03/10/2025", "03/10/2025"]}, {"email_hash": "ver***yahoo.com", "name": "V\u00e9ronique Le Fort-Tobias", "bookings": 2, "countries": ["United Kingdom"], "dates": ["03/11/2025", "03/11/2025"]}, {"email_hash": "kot***gmail.com", "name": "Natalie Kotze", "bookings": 2, "countries": ["South Africa"], "dates": ["04/11/2025", "04/11/2025"]}, {"email_hash": "kaw***hotmail.com", "name": "Nour ab", "bookings": 2, "countries": ["Saudi Arabia"], "dates": ["07/11/2025", "05/01/2026"]}, {"email_hash": "ann***hotmail.com", "name": "Ou Li", "bookings": 2, "countries": ["United Kingdom"], "dates": ["19/11/2025", "24/11/2025"]}, {"email_hash": "tur***gmail.com", "name": "Aykut Turker", "bookings": 2, "countries": ["United Kingdom"], "dates": ["12/12/2025", "12/12/2025"]}, {"email_hash": "van***gmail.com", "name": "Vandita Gupta", "bookings": 2, "countries": ["United Kingdom"], "dates": ["13/12/2025", "14/12/2025"]}, {"email_hash": "ben***gmail.com", "name": "Jeff Benner", "bookings": 2, "countries": ["Canada"], "dates": ["17/11/2025", "16/11/2025"]}, {"email_hash": "quo***gmail.com", "name": "Shai Grosskopf", "bookings": 2, "countries": ["United Kingdom"], "dates": ["04/12/2025", "04/12/2025"]}, {"email_hash": "jod***gmail.com", "name": "Mrs J L Blizniukiene", "bookings": 2, "countries": ["United Kingdom"], "dates": ["28/12/2025", "28/12/2025"]}, {"email_hash": "lin***hotmail.com", "name": "Lindsay McAuley", "bookings": 2, "countries": ["United Kingdom"], "dates": ["26/12/2025", "23/12/2025"]}, {"email_hash": "jul***gmail.com", "name": "Julio Gener", "bookings": 2, "countries": ["United Kingdom"], "dates": ["18/12/2025", "27/12/2025"]}, {"email_hash": "san***hotmail.com", "name": "Sandra Morgan", "bookings": 2, "countries": ["USA"], "dates": ["16/01/2026", "16/01/2026"]}, {"email_hash": "tho***gmail.com", "name": "Tom Jackson", "bookings": 2, "countries": ["Australia"], "dates": ["17/01/2026", "17/01/2026"]}, {"email_hash": "chr***hotmail.com", "name": "Christopher Wilkinson", "bookings": 2, "countries": ["United Kingdom"], "dates": ["02/01/2026", "02/01/2026"]}], "ukPostcodes": {"SW": 178, "SE": 126, "E": 108, "N": 95, "NW": 84, "W": 83, "KT": 79, "TW": 42, "GU": 42, "CM": 35, "HA": 29, "SG": 28, "RH": 28, "BN": 27, "BR": 26, "HP": 25, "AL": 25, "RG": 25, "DA": 25, "TN": 24, "CR": 24, "EN": 24, "RM": 23, "SL": 23, "SS": 20}, "monthlyTotals": {"2025-06": 9, "2025-07": 164, "2025-08": 132, "2025-09": 168, "2025-10": 193, "2025-11": 528, "2025-12": 576, "2026-01": 346, "2026-02": 211, "2026-03": 349}, "stats": {"totalCustomers": 2676, "uniqueCountries": 61, "repeatCount": 30, "ukPercent": 80.4, "topNonUK": [["USA", 159], ["United Arab Emirates", 25], ["Australia", 25], ["France", 21], ["Germany", 17]]}};
 
@@ -336,7 +387,7 @@
             });
         }
 
-        function renderDashboard() { updateKPIs(); updateCharts(); renderTable(); }
+        function renderDashboard() { updateKPIs(); renderRevenueTrend(); updateCharts(); renderTable(); }
 
         // ==================== CUSTOMER TAB ====================
         let custChartsInit = false;
