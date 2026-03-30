@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | B2B Performance Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pl-storm: #0A181C;
+            --pl-monday: #79E2FF;
+            --pl-day: #C7F88A;
+            --pl-black: #000000;
+            --pl-suede: #00A5D3;
+            --pl-border: #1A3540;
+            --pl-text: #E0F0F4;
+            --pl-text-muted: #6B9AAB;
+            --pl-card: #0F2228;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0A181C 0%, #000000 100%);
+            color: var(--pl-text);
+        }
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            margin: 1rem;
+            background: var(--pl-storm);
+            border: 1px solid var(--pl-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .accent-bar { height: 4px; background: linear-gradient(90deg, var(--pl-monday) 0%, var(--pl-suede) 100%); }
+        .card-body { padding: 2rem; }
+        .logo { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .logo svg { width: 36px; height: 36px; }
+        .logo-text { color: var(--pl-monday); font-weight: 700; font-size: 1.1rem; }
+        .logo-sub { color: var(--pl-text-muted); font-size: 0.7rem; }
+        h1 { font-size: 1.4rem; font-weight: 700; color: var(--pl-text); margin-bottom: 0.5rem; }
+        .subtitle { color: var(--pl-text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+        .security-note {
+            background: rgba(121, 226, 255, 0.08);
+            border: 1px solid rgba(121, 226, 255, 0.15);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            color: var(--pl-text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+        .btn-slack {
+            width: 100%;
+            padding: 0.875rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--pl-monday);
+            color: var(--pl-black);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-slack:hover { background: var(--pl-suede); color: #fff; }
+        .btn-slack:disabled { opacity: 0.5; cursor: not-allowed; }
+        .step-hint {
+            display: none;
+            margin-top: 1.25rem;
+            padding: 1rem;
+            background: rgba(199, 248, 138, 0.08);
+            border: 1px solid rgba(199, 248, 138, 0.15);
+            border-radius: 8px;
+        }
+        .step-hint.visible { display: block; }
+        .step-hint p { font-size: 0.85rem; color: var(--pl-text-muted); margin-bottom: 0.5rem; line-height: 1.5; }
+        .step-hint code {
+            display: inline-block;
+            background: rgba(121, 226, 255, 0.15);
+            color: var(--pl-monday);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'SF Mono', Menlo, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .code-input-wrap {
+            display: none;
+            margin-top: 1.25rem;
+        }
+        .code-input-wrap.visible { display: block; }
+        .code-input-wrap label { display: block; font-size: 0.8rem; color: var(--pl-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .code-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--pl-border);
+            border-radius: 8px;
+            background: var(--pl-black);
+            color: var(--pl-text);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .code-input:focus { border-color: var(--pl-monday); box-shadow: 0 0 0 3px rgba(121, 226, 255, 0.15); }
+        .code-input::placeholder { color: var(--pl-text-muted); font-size: 0.9rem; letter-spacing: normal; font-weight: 400; }
+        .error-msg {
+            display: none;
+            margin-top: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 8px;
+            color: #fca5a5;
+            font-size: 0.8rem;
+        }
+        .error-msg.visible { display: block; }
+        .verifying-msg {
+            display: none;
+            margin-top: 0.75rem;
+            text-align: center;
+            color: var(--pl-monday);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .verifying-msg.visible { display: block; }
+        .footer { text-align: center; padding: 1rem 2rem 1.5rem; color: var(--pl-text-muted); font-size: 0.7rem; border-top: 1px solid var(--pl-border); }
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.2); border-top-color: var(--pl-black); border-radius: 50%; animation: spin 0.6s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="accent-bar"></div>
+        <div class="card-body">
+            <div class="logo">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="#79E2FF"/>
+                    <rect x="10" y="10" width="12" height="20" fill="#0A181C"/>
+                    <rect x="18" y="10" width="12" height="12" fill="#000000" fill-opacity="0.3"/>
+                </svg>
+                <div>
+                    <div class="logo-text">Platinumlist</div>
+                    <div class="logo-sub">B2B Performance Hub</div>
+                </div>
+            </div>
+
+            <h1>Sign In</h1>
+            <p class="subtitle">Authenticate via Slack to access the dashboard</p>
+
+            <div class="security-note">
+                Passwordless login via Slack OTP. DM <strong>@gatey</strong> in your Slack workspace to receive a one-time code.
+            </div>
+
+            <button class="btn-slack" id="btnSlack" onclick="requestSlackOTP()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zm10.122 2.521a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.268 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zm-2.523 10.122a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.268a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>
+                Login via Slack
+            </button>
+
+            <div class="step-hint" id="stepHint">
+                <p><strong>Step 1:</strong> Open Slack and DM <strong>@gatey</strong></p>
+                <p><strong>Step 2:</strong> Send the message: <code>otp b2b</code></p>
+                <p><strong>Step 3:</strong> Enter the 6-digit code below</p>
+            </div>
+
+            <div class="code-input-wrap" id="codeWrap">
+                <label>Enter OTP Code</label>
+                <input type="text" class="code-input" id="codeInput" maxlength="6" placeholder="000000" inputmode="numeric" autocomplete="one-time-code">
+            </div>
+
+            <div class="error-msg" id="errorMsg"></div>
+            <div class="verifying-msg" id="verifyingMsg"><span class="spinner"></span> Verifying...</div>
+        </div>
+        <div class="footer">Platinumlist B2B Performance Hub &mdash; Secured with Slack OTP</div>
+    </div>
+
+    <script>
+        // Check if already authenticated
+        (async () => {
+            try {
+                const r = await fetch('/api/otp/session');
+                const d = await r.json();
+                if (d.authenticated) window.location.href = '/';
+            } catch {}
+        })();
+
+        function showError(msg) {
+            const el = document.getElementById('errorMsg');
+            el.textContent = msg;
+            el.classList.add('visible');
+            setTimeout(() => el.classList.remove('visible'), 5000);
+        }
+
+        async function requestSlackOTP() {
+            const btn = document.getElementById('btnSlack');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Connecting...';
+            document.getElementById('errorMsg').classList.remove('visible');
+
+            try {
+                const r = await fetch('/api/otp/request', { method: 'POST' });
+                const d = await r.json();
+                if (!r.ok || !d.ok) {
+                    showError(d.error || 'Failed to initiate Slack OTP');
+                    btn.disabled = false;
+                    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/></svg> Login via Slack';
+                    return;
+                }
+                document.getElementById('stepHint').classList.add('visible');
+                document.getElementById('codeWrap').classList.add('visible');
+                document.getElementById('codeInput').focus();
+                btn.innerHTML = 'Code Requested — Check Slack';
+                btn.style.background = 'var(--pl-border)';
+                btn.style.color = 'var(--pl-text-muted)';
+            } catch (e) {
+                showError('Network error. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Login via Slack';
+            }
+        }
+
+        document.getElementById('codeInput').addEventListener('input', async function () {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length === 6) {
+                this.disabled = true;
+                document.getElementById('verifyingMsg').classList.add('visible');
+                document.getElementById('errorMsg').classList.remove('visible');
+
+                try {
+                    const r = await fetch('/api/otp/verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ code: this.value }),
+                    });
+                    const d = await r.json();
+                    if (d.ok) {
+                        document.getElementById('verifyingMsg').innerHTML = 'Authenticated! Redirecting...';
+                        setTimeout(() => window.location.href = '/', 500);
+                    } else {
+                        const msgs = {
+                            otp_incorrect: 'Incorrect code. Please try again.',
+                            otp_request_expired: 'Request expired. Please click Login via Slack again.',
+                            otp_request_required: 'Please click Login via Slack first.',
+                            project_mismatch: 'Session mismatch. Please clear cookies and try again.',
+                            email_missing_from_request: 'Could not determine your email. Try again.',
+                        };
+                        showError(msgs[d.error] || d.message || d.error || 'Verification failed');
+                        this.value = '';
+                        this.disabled = false;
+                        this.focus();
+                        document.getElementById('verifyingMsg').classList.remove('visible');
+                    }
+                } catch (e) {
+                    showError('Network error during verification.');
+                    this.value = '';
+                    this.disabled = false;
+                    this.focus();
+                    document.getElementById('verifyingMsg').classList.remove('visible');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
