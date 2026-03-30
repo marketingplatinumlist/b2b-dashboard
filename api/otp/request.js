@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-const PROJECT = 'b2b';
+const PROJECT = 'b2b LTS';
 const REQ_COOKIE = 'soreq';
 const REQ_TTL_SECONDS = 15 * 60;
 const DEFAULT_GATEY_OTP_URL = 'https://kwftlkfvtglnugxsyjci.supabase.co/functions/v1/b2b-slack-otp-v2';
