@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-const PROJECT = 'b2b';
+const PROJECT = 'b2b LTS';
 const REQ_COOKIE = 'soreq';
 const AUTH_COOKIE = 'somauth';
 const REQ_TTL_MS = 15 * 60 * 1000;
