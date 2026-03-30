@@ -7,6 +7,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    // Auth check — redirect to login if not authenticated
+    (async () => {
+        try {
+            const r = await fetch('/api/otp/session');
+            const d = await r.json();
+            if (!d.authenticated) {
+                window.location.href = '/login.html';
+                return;
+            }
+            // Store email for logout button
+            window.__authEmail = d.email;
+        } catch {
+            window.location.href = '/login.html';
+        }
+    })();
+    </script>
     <style>
         :root {
             --pl-storm: #0A181C;
@@ -88,6 +105,7 @@
                         <div class="pl-logo-sub">for organisers</div>
                     </div>
                 </div>
+                <button onclick="(async()=>{await fetch('/api/otp/logout',{method:'POST'});window.location.href='/login.html'})()" style="padding:0.5rem 1rem;border-radius:6px;border:1px solid var(--pl-border);background:transparent;color:var(--pl-text-muted);font-size:0.8rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--pl-monday)';this.style.color='var(--pl-monday)'" onmouseout="this.style.borderColor='var(--pl-border)';this.style.color='var(--pl-text-muted)'">Logout</button>
             </div>
         </div>
         <div class="mb-6" style="border-bottom: 1px solid var(--pl-border);">
