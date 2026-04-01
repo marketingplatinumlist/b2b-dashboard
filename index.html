@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B2B Tickets & Google Ads Dashboard | Platinumlist</title>
+    <title>B2B Performance Hub | Platinumlist</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -108,8 +108,16 @@
                 <button onclick="(async()=>{await fetch('/api/otp/logout',{method:'POST'});window.location.href='/login.html'})()" style="padding:0.5rem 1rem;border-radius:6px;border:1px solid var(--pl-border);background:transparent;color:var(--pl-text-muted);font-size:0.8rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--pl-monday)';this.style.color='var(--pl-monday)'" onmouseout="this.style.borderColor='var(--pl-border)';this.style.color='var(--pl-text-muted)'">Logout</button>
             </div>
         </div>
-        <div class="mb-6" style="border-bottom: 1px solid var(--pl-border);">
-            <button class="nav-tab active" onclick="switchMainTab('ads')">Google Ads & B2B</button>
+        <!-- Top-level page nav -->
+        <div class="mb-2" style="border-bottom: 2px solid var(--pl-border); display: flex; gap: 0; overflow-x: auto;">
+            <a href="/index.html" class="nav-tab active" style="text-decoration:none; white-space:nowrap;">Google Ads & LTS</a>
+            <a href="/attractions.html?country=UK" class="nav-tab" style="text-decoration:none; white-space:nowrap;">UK Attractions</a>
+            <a href="/attractions.html?country=NL" class="nav-tab" style="text-decoration:none; white-space:nowrap;">NL Attractions</a>
+            <a href="/attractions.html?country=FR" class="nav-tab" style="text-decoration:none; white-space:nowrap;">France Attractions</a>
+        </div>
+        <!-- Sub-tabs for LTS page -->
+        <div class="mb-6 mt-4" style="border-bottom: 1px solid var(--pl-border);">
+            <button class="nav-tab active" onclick="switchMainTab('ads')">Ads & Performance</button>
             <button class="nav-tab" onclick="switchMainTab('customers')">Customer Intelligence</button>
         </div>
         <div id="tab-ads" class="tab-content active">
