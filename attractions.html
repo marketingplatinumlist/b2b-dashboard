@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attractions Performance Hub | Platinumlist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    (async () => {
+        try {
+            const r = await fetch('/api/otp/session');
+            const d = await r.json();
+            if (!d.authenticated) { window.location.href = '/login.html'; return; }
+            window.__authEmail = d.email;
+        } catch { window.location.href = '/login.html'; }
+    })();
+    </script>
+    <style>
+        :root {
+            --pl-storm: #0A181C;
+            --pl-monday: #79E2FF;
+            --pl-day: #C7F88A;
+            --pl-black: #000000;
+            --pl-suede: #00A5D3;
+            --pl-card: #0F2228;
+            --pl-border: #1A3540;
+            --pl-text: #E0F0F4;
+            --pl-text-muted: #6B9AAB;
+        }
+        * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        body { background-color: var(--pl-black); color: var(--pl-text); }
+        .card { background-color: var(--pl-storm); border: 1px solid var(--pl-border); border-radius: 8px; }
+        .header-accent { height: 4px; background: linear-gradient(90deg, var(--pl-monday) 0%, var(--pl-suede) 100%); border-radius: 2px; }
+        .btn-pill { padding: 0.5rem 1.25rem; border-radius: 9999px; font-weight: 500; font-size: 0.875rem; transition: all 0.3s ease; border: none; cursor: pointer; }
+        .btn-active { background-color: var(--pl-monday); color: var(--pl-black); font-weight: 700; }
+        .btn-inactive { background-color: transparent; color: var(--pl-text-muted); border: 1px solid var(--pl-border); }
+        .btn-inactive:hover { background-color: var(--pl-storm); border-color: var(--pl-monday); color: var(--pl-monday); }
+        .kpi-card { display: flex; flex-direction: column; justify-content: space-between; }
+        .kpi-value { font-size: 1.75rem; font-weight: 700; color: var(--pl-monday); margin-top: 0.5rem; }
+        .kpi-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--pl-text-muted); font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background-color: var(--pl-black); border-bottom: 2px solid var(--pl-border); padding: 0.75rem; text-align: left; font-weight: 600; font-size: 0.8rem; cursor: pointer; user-select: none; color: var(--pl-monday); }
+        th:hover { background-color: var(--pl-storm); }
+        td { padding: 0.75rem; border-bottom: 1px solid var(--pl-border); font-size: 0.8rem; }
+        tr:hover { background-color: rgba(121, 226, 255, 0.05); }
+        .search-box { background-color: var(--pl-storm); border: 1px solid var(--pl-border); color: var(--pl-text); padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.85rem; }
+        .search-box::placeholder { color: var(--pl-text-muted); }
+        .search-box:focus { outline: none; border-color: var(--pl-monday); box-shadow: 0 0 0 3px rgba(121, 226, 255, 0.15); }
+        .pl-logo { display: inline-flex; align-items: center; gap: 0.75rem; }
+        .pl-logo svg { width: 36px; height: 36px; }
+        .pl-logo-text { color: var(--pl-monday); font-weight: 700; font-size: 1.1rem; }
+        .pl-logo-sub { color: var(--pl-text-muted); font-size: 0.7rem; }
+        .footer { color: var(--pl-text-muted); font-size: 0.75rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--pl-border); }
+        .positive { color: var(--pl-day); }
+        .negative { color: #ef4444; }
+        .neutral { color: var(--pl-text-muted); }
+        .nav-tab { padding: 0.75rem 1.5rem; font-weight: 600; font-size: 0.95rem; cursor: pointer; border: none; background: transparent; color: var(--pl-text-muted); border-bottom: 3px solid transparent; transition: all 0.3s; text-decoration: none; display: inline-block; white-space: nowrap; }
+        .nav-tab:hover { color: var(--pl-monday); }
+        .nav-tab.active { color: var(--pl-monday); border-bottom-color: var(--pl-monday); }
+    </style>
+</head>
+<body>
+<div class="max-w-7xl mx-auto p-6">
+    <div class="mb-6">
+        <div class="header-accent mb-4"></div>
+        <div class="flex items-center justify-between flex-wrap gap-4">
+            <div>
+                <h1 class="text-3xl font-bold mb-1" style="color: var(--pl-monday);">B2B Performance Hub</h1>
+                <p style="color: var(--pl-text-muted);">Tickets, Ads & Attractions Intelligence</p>
+            </div>
+            <div class="pl-logo">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="#79E2FF"/>
+                    <rect x="10" y="10" width="12" height="20" fill="#0A181C"/>
+                    <rect x="18" y="10" width="12" height="12" fill="#000000" fill-opacity="0.3"/>
+                </svg>
+                <div>
+                    <div class="pl-logo-text">Platinumlist</div>
+                    <div class="pl-logo-sub">for organisers</div>
+                </div>
+            </div>
+            <button onclick="(async()=>{await fetch('/api/otp/logout',{method:'POST'});window.location.href='/login.html'})()" style="padding:0.5rem 1rem;border-radius:6px;border:1px solid var(--pl-border);background:transparent;color:var(--pl-text-muted);font-size:0.8rem;cursor:pointer;" onmouseover="this.style.borderColor='var(--pl-monday)';this.style.color='var(--pl-monday)'" onmouseout="this.style.borderColor='var(--pl-border)';this.style.color='var(--pl-text-muted)'">Logout</button>
+        </div>
+    </div>
+
+    <!-- Top-level page nav -->
+    <div class="mb-4" style="border-bottom: 2px solid var(--pl-border); display: flex; gap: 0; overflow-x: auto;">
+        <a href="/index.html" class="nav-tab" style="text-decoration:none;">Google Ads & LTS</a>
+        <a href="/attractions.html?country=UK" id="nav-UK" class="nav-tab" style="text-decoration:none;">UK Attractions</a>
+        <a href="/attractions.html?country=NL" id="nav-NL" class="nav-tab" style="text-decoration:none;">NL Attractions</a>
+        <a href="/attractions.html?country=FR" id="nav-FR" class="nav-tab" style="text-decoration:none;">France Attractions</a>
+    </div>
+
+    <!-- Country Filter (sub-filter within attractions) -->
+    <div class="mb-4 flex gap-3 flex-wrap">
+        <button class="btn-pill btn-active" id="country-all" onclick="switchCountry('all')">All Markets</button>
+        <button class="btn-pill btn-inactive" id="country-UK" onclick="switchCountry('UK')">UK</button>
+        <button class="btn-pill btn-inactive" id="country-NL" onclick="switchCountry('NL')">Netherlands</button>
+        <button class="btn-pill btn-inactive" id="country-FR" onclick="switchCountry('FR')">France</button>
+    </div>
+
+    <!-- Week Selector -->
+    <div class="mb-8 flex gap-3">
+        <button class="btn-pill btn-inactive" id="week1-btn" onclick="switchWeek('week1')">Mar 9-15</button>
+        <button class="btn-pill btn-inactive" id="week2-btn" onclick="switchWeek('week2')">Mar 16-22</button>
+        <button class="btn-pill btn-inactive" id="week3-btn" onclick="switchWeek('week3')">Mar 23-29</button>
+        <button class="btn-pill btn-active" id="week4-btn" onclick="switchWeek('week4')">Mar 30-31</button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        <div class="card p-4 kpi-card"><div class="kpi-label">Attractions</div><div class="kpi-value" id="kpi-attractions">0</div></div>
+        <div class="card p-4 kpi-card"><div class="kpi-label">Revenue (AED)</div><div class="kpi-value" id="kpi-revenue">0</div></div>
+        <div class="card p-4 kpi-card"><div class="kpi-label">Net Revenue (AED)</div><div class="kpi-value" id="kpi-netrev">0</div></div>
+        <div class="card p-4 kpi-card"><div class="kpi-label">Ad Spend (AED)</div><div class="kpi-value" id="kpi-spend">0</div></div>
+        <div class="card p-4 kpi-card"><div class="kpi-label">ROI</div><div class="kpi-value" id="kpi-roi">0x</div></div>
+        <div class="card p-4 kpi-card"><div class="kpi-label">Total Clicks</div><div class="kpi-value" id="kpi-clicks">0</div></div>
+    </div>
+
+    <!-- Revenue Trend Chart -->
+    <div class="card p-6 mb-8">
+        <h2 class="text-lg font-semibold mb-4" style="color: var(--pl-monday);">Weekly Revenue Trend (3-Week)</h2>
+        <div style="position: relative; height: 280px;"><canvas id="revenueTrendChart"></canvas></div>
+    </div>
+
+    <!-- Two Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="card p-6">
+            <h2 class="text-lg font-semibold mb-4" style="color: var(--pl-monday);">Revenue vs Ad Spend (Top 15)</h2>
+            <div style="position: relative; height: 450px;"><canvas id="revenueVsCostChart"></canvas></div>
+        </div>
+        <div class="card p-6">
+            <h2 class="text-lg font-semibold mb-4" style="color: var(--pl-day);">Revenue by Country</h2>
+            <div style="position: relative; height: 450px;"><canvas id="countryChart"></canvas></div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card p-6">
+        <h2 class="text-lg font-semibold mb-4" style="color: var(--pl-monday);">Detailed Performance</h2>
+        <div class="mb-4"><input type="text" id="searchBox" class="search-box w-full" placeholder="Search attractions..." oninput="renderTable()"></div>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead><tr>
+                    <th onclick="sortTable('name')">Attraction Name</th>
+                    <th onclick="sortTable('country')">Country</th>
+                    <th onclick="sortTable('revLocal')">Revenue (Local)</th>
+                    <th onclick="sortTable('revAed')">Revenue (AED)</th>
+                    <th onclick="sortTable('netRev')">Net Rev (AED)</th>
+                    <th onclick="sortTable('spend')">Ad Spend (AED)</th>
+                    <th onclick="sortTable('roi')">ROI</th>
+                    <th onclick="sortTable('clicks')">Clicks</th>
+                    <th onclick="sortTable('impressions')">Impressions</th>
+                    <th onclick="sortTable('cpc')">CPC (AED)</th>
+                </tr></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Data: Platinumlist Revenue (BigQuery &rarr; Supabase) + Google Ads (Windsor.ai) | GBP &times; 4.86 = AED | EUR &times; 4.02 = AED | Net Revenue = Revenue &times; 15% | ROI = Net Revenue / Ad Spend | Generated: March 30, 2026</p>
+    </div>
+</div>
+
+<script>
+const GBP_TO_AED = 4.86;
+const EUR_TO_AED = 4.02;
+const NET_REV_RATE = 0.15;
+
+let currentWeek = 'week4';
+let currentCountry = 'all';
+let sortCol = 'revAed';
+let sortAsc = false;
+let chartTrend = null, chartRevCost = null, chartCountry = null;
+
+// ========== REVENUE DATA (from dashboard_events, Supabase) ==========
+const revenueData = {
+"United Kingdom": {
+  "week1": {
+    "Uber Boat by Thames Clippers": 287, "Frameless - Immersive Art Experience London": 3470.5,
+    "Sea Life Brighton": 252, "Tower Bridge Entry Tickets": 142,
+    "Lift 109 at Battersea Power Station": 107.5, "Churchill War Rooms": 2899,
+    "Climb Up at The O2": 458, "Stonehenge Entry Tickets": 160.5,
+    "Shrek's Adventure London Entry Ticket": 224, "SEA LIFE Birmingham": 504,
+    "SEA LIFE London Aquarium - Entry Ticket": 446, "Kensington Palace: Entry Ticket": 49.4,
+    "Madame Tussauds London - Standard Entry": 315, "Edinburgh Castle: Entry Ticket + Guided Tour": 1487,
+    "LEGOLAND Windsor (with optional transfers)": 889, "St Paul's Cathedral": 403,
+    "London: HMS Belfast Tickets": 158.1, "Paradox Museum London: Entry Ticket": 208,
+    "Hampton Court Palace, Gardens & Maze: Entry Ticket": 234, "Westminster Abbey: Entry Ticket": 56,
+    "The London Dungeon Entry Ticket": 106, "The Edinburgh Dungeons Entry Ticket": 20,
+    "Palace of Holyroodhouse Entry Tickets": 435,
+    "London Dungeon, SEA LIFE London & Madame Tussauds - 3 way ticket": 108,
+    "Harry Potter Studio Tour departure from Victoria/Baker Street": 473
+  },
+  "week2": {
+    "Frameless - Immersive Art Experience London": 6916.5, "Madame Tussauds London - Standard Entry": 551,
+    "Tower Bridge Entry Tickets": 475, "Paradox Museum London: Entry Ticket": 1064,
+    "Edinburgh Castle: Entry Ticket + Guided Tour": 1324, "LEGOLAND Windsor (with optional transfers)": 2667,
+    "Churchill War Rooms": 1164.8, "Sea Life Brighton": 429,
+    "Climb Up at The O2": 1336, "Westminster Abbey: Entry Ticket": 408,
+    "London Zoo: Entry Ticket": 282.01, "Lift 109 at Battersea Power Station": 838.5,
+    "Stonehenge Entry Tickets": 409.5, "Hampton Court Palace, Gardens & Maze: Entry Ticket": 339,
+    "The Edinburgh Dungeons Entry Ticket": 281, "SEA LIFE Birmingham": 840,
+    "London: HMS Belfast Tickets": 700.65,
+    "Thames Cruise: Tower Bridge (Butler's Wharf Pier) To Greenwich with optional return": 89.1,
+    "Kensington Palace: Entry Ticket": 271.1, "Palace of Holyroodhouse Entry Tickets": 111,
+    "Shrek's Adventure London Entry Ticket": 137, "Uber Boat by Thames Clippers": 146.25,
+    "St Paul's Cathedral": 109, "London Eye Same Day Entry Ticket": 74,
+    "SEA LIFE London Aquarium - Entry Ticket": 345, "The London Dungeon Entry Ticket": 321,
+    "London Eye + Madame Tussauds London - 2 way ticket": 98, "LEGOLAND Discovery Centre Birmingham": 196
+  },
+  "week3": {
+    "Frameless - Immersive Art Experience London": 4768, "Edinburgh Castle: Entry Ticket + Guided Tour": 1574,
+    "SEA LIFE Birmingham": 1008, "SEA LIFE London Aquarium - Entry Ticket": 863,
+    "LEGOLAND Windsor (with optional transfers)": 783, "Paradox Museum London: Entry Ticket": 709.5,
+    "London Zoo: Entry Ticket": 651.32, "Climb Up at The O2": 543,
+    "Hampton Court Palace, Gardens & Maze: Entry Ticket": 535.5, "Palace of Holyroodhouse Entry Tickets": 519,
+    "Sea Life Brighton": 442, "Lift 109 at Battersea Power Station": 412.65,
+    "St Paul's Cathedral": 362, "Churchill War Rooms": 230.3,
+    "Cadbury World Birmingham": 224, "London: HMS Belfast Tickets": 208.1,
+    "Tower Bridge Entry Tickets": 205, "Madame Tussauds London - Standard Entry": 193,
+    "The London Dungeon Entry Ticket": 189, "Stonehenge Entry Tickets": 185.73,
+    "LEGOLAND Discovery Centre Birmingham": 141,
+    "Westminster 3 Hour Walking Tour & Westminster Abbey": 68,
+    "Westminster Abbey: Entry Ticket": 57, "Uber Boat by Thames Clippers": 34.2
+  },
+  "week4": {
+    "Frameless - Immersive Art Experience London": 1206.5, "LEGOLAND Windsor (with optional transfers)": 823,
+    "The London Eye": 445, "SEA LIFE Birmingham": 392,
+    "Edinburgh Castle: Entry Ticket + Guided Tour": 338, "Palace of Holyroodhouse Entry Tickets": 333,
+    "Cadbury World Birmingham": 309, "Sea Life Brighton": 296,
+    "Hampton Court Palace, Gardens & Maze: Entry Ticket": 294, "London Zoo: Entry Ticket": 280.75,
+    "Westminster Abbey: Entry Ticket": 247, "Climb Up at The O2": 220,
+    "The London Dungeon Entry Ticket": 198, "Paradox Museum London: Entry Ticket": 147,
+    "LEGOLAND Discovery Centre Birmingham": 140, "The Edinburgh Dungeons Entry Ticket": 98,
+    "Lift 109 at Battersea Power Station": 86, "Madame Tussauds London - Standard Entry": 79,
+    "Stonehenge Entry Tickets": 73, "St Paul's Cathedral": 55,
+    "Kensington Palace: Entry Ticket": 40, "SEA LIFE London Aquarium - Entry Ticket": 39
+  }
+},
+"Netherlands": {
+  "week1": {
+    "Heineken Experience: Entry Ticket": 548.9, "Fabrique des Lumières: From Vermeer to Van Gogh": 106.8,
+    "Anne Frank & Jewish Quarter Guided Tour": 782, "AMAZE: The Immersive Experience": 221.6,
+    "NEMO Science Museum: Entry Ticket": 324.5, "Van Gogh Museum: Entry Ticket": 152.5,
+    "Moco Museum Amsterdam: Entry Ticket": 140.48, "Stedelijk Museum Amsterdam: Entry Ticket": 102.5,
+    "THIS IS HOLLAND: Entry Ticket": 506, "Tulip Experience Amsterdam: Entry Ticket": 100,
+    "The Rembrandt House Museum: Entry Ticket + Multimedia Guide": 43,
+    "Keukenhof Gardens with transport": 304.5, "Madame Tussauds Amsterdam: Entry Ticket": 48,
+    "Efteling: Entry Ticket": 47
+  },
+  "week2": {
+    "NEMO Science Museum: Entry Ticket": 1356.5, "Anne Frank & Jewish Quarter Guided Tour": 848,
+    "Heineken Experience: Entry Ticket": 299.4,
+    "XtraCold Icebar Experience: Skip The Line + 3 Drinks": 180,
+    "Van Gogh Museum: Entry Ticket": 176.75, "Keukenhof Gardens with transport": 718,
+    "Madame Tussauds Amsterdam: Entry Ticket": 96, "Moco Museum Amsterdam: Entry Ticket": 388.96,
+    "THIS IS HOLLAND: Entry Ticket": 453,
+    "Fabrique des Lumières: Monet, Master of Impressionism": 39.6,
+    "The Upside Down: Entry Ticket": 147.7, "AMAZE: The Immersive Experience": 256.65,
+    "Stedelijk Museum Amsterdam: Entry Ticket": 45,
+    "A'DAM Lookout: Entry Ticket + Lunch or Dinner": 102
+  },
+  "week3": {
+    "NEMO Science Museum: Entry Ticket": 1294, "Anne Frank & Jewish Quarter Guided Tour": 2161,
+    "Keukenhof Gardens with transport": 196, "Rembrandts Amsterdam Experience: Entry Ticket": 52.5,
+    "THIS IS HOLLAND: Entry Ticket": 436,
+    "A'DAM Lookout: Fast Track Ticket + 1 Drink": 205,
+    "Madame Tussauds Amsterdam: Entry Ticket": 115, "Moco Museum Amsterdam: Entry Ticket": 304,
+    "Van Gogh Museum: Entry Ticket": 86.5, "Fabrique des Lumières: From Vermeer to Van Gogh": 19.8,
+    "The Upside Down: Entry Ticket": 209.55,
+    "XtraCold Icebar Experience: Skip The Line + 3 Drinks": 45,
+    "Stedelijk Museum Amsterdam: Entry Ticket": 45
+  },
+  "week4": {
+    "NEMO Science Museum: Entry Ticket": 756.5, "Stedelijk Museum Amsterdam: Entry Ticket": 57.5,
+    "Moco Museum Amsterdam: Entry Ticket": 92, "The Upside Down: Entry Ticket": 129.75,
+    "THIS IS HOLLAND: Entry Ticket": 144, "Anne Frank & Jewish Quarter Guided Tour": 264,
+    "Madame Tussauds Amsterdam: Entry Ticket": 96, "Efteling: Entry Ticket": 141,
+    "AMAZE: The Immersive Experience": 82.85, "Fabrique des Lumières: From Vermeer to Van Gogh": 55
+  }
+},
+"France": {
+  "week1": {},
+  "week2": {
+    "Palace of Versailles: Entry Ticket + Gardens + Estate of Trianon": 52,
+    "Musée de l'Orangerie: Entry Ticket": 189,
+    "Musée Rodin: Skip The Line": 60,
+    "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": 34
+  },
+  "week3": {
+    "Paris: Arc de Triomphe Rooftop Tickets": 248,
+    "Musée de l'Orangerie: Entry Ticket": 81,
+    "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": 68,
+    "Musée Rodin: Skip The Line": 105,
+    "Centre Pompidou: Exhibition + Rooftop Access": 14
+  },
+  "week4": {
+    "Musée de l'Orangerie: Entry Ticket": 67.5, "Musée Rodin: Skip The Line": 105,
+    "Paris: Arc de Triomphe Rooftop Tickets": 106, "Musée d'Orsay Paris Dedicated Entrance": 88.5
+  }
+}
+};
+
+// Currency for each country
+const countryCurrency = { "United Kingdom": "GBP", "Netherlands": "EUR", "France": "EUR" };
+const countryCode = { "United Kingdom": "UK", "Netherlands": "NL", "France": "FR" };
+const countryFlag = { "UK": "🇬🇧", "NL": "🇳🇱", "FR": "🇫🇷" };
+const fxRate = { "GBP": GBP_TO_AED, "EUR": EUR_TO_AED };
+
+// ========== PER-ATTRACTION GOOGLE ADS DATA (clubbed Perf Max + base) ==========
+const adsData = {
+"UK": {
+  "week1": {
+    "Churchill War Rooms": {s:1415.93,c:856,i:15439}, "Frameless - Immersive Art Experience London": {s:1592.16,c:1535,i:7025},
+    "Edinburgh Castle: Entry Ticket + Guided Tour": {s:419.65,c:755,i:2767},
+    "LEGOLAND Windsor (with optional transfers)": {s:231.97,c:213,i:1480},
+    "Climb Up at The O2": {s:502.30,c:396,i:2396}, "SEA LIFE Birmingham": {s:420.24,c:560,i:2987},
+    "Sea Life Brighton": {s:343.72,c:223,i:904}, "SEA LIFE London Aquarium - Entry Ticket": {s:273.22,c:194,i:2023},
+    "Paradox Museum London: Entry Ticket": {s:206.31,c:316,i:2148},
+    "Tower Bridge Entry Tickets": {s:196.04,c:171,i:1476},
+    "Madame Tussauds London - Standard Entry": {s:194.66,c:125,i:1063},
+    "The London Dungeon Entry Ticket": {s:145.78,c:110,i:688},
+    "The Edinburgh Dungeons Entry Ticket": {s:181.76,c:185,i:1100},
+    "Westminster Abbey: Entry Ticket": {s:179.42,c:135,i:1130},
+    "Stonehenge Entry Tickets": {s:234.95,c:216,i:1549},
+    "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:144.40,c:113,i:1473},
+    "Lift 109 at Battersea Power Station": {s:255.94,c:239,i:1951},
+    "Palace of Holyroodhouse Entry Tickets": {s:149.67,c:116,i:683},
+    "Uber Boat by Thames Clippers": {s:106.97,c:206,i:1854},
+    "London: HMS Belfast Tickets": {s:204.30,c:124,i:587},
+    "Kensington Palace: Entry Ticket": {s:142.02,c:73,i:779},
+    "Shrek's Adventure London Entry Ticket": {s:205.09,c:87,i:1210},
+    "St Paul's Cathedral": {s:72.72,c:139,i:581},
+    "Harry Potter Studio Tour departure from Victoria/Baker Street": {s:74.73,c:89,i:414},
+    "SEA LIFE Manchester Entry Ticket": {s:135.15,c:36,i:583}
+  },
+  "week2": {
+    "Frameless - Immersive Art Experience London": {s:3854.20,c:2320,i:9995},
+    "Churchill War Rooms": {s:1991.16,c:1051,i:8350},
+    "Edinburgh Castle: Entry Ticket + Guided Tour": {s:1625.93,c:1761,i:6611},
+    "LEGOLAND Windsor (with optional transfers)": {s:1726.76,c:994,i:6439},
+    "Climb Up at The O2": {s:723.12,c:494,i:2794}, "SEA LIFE Birmingham": {s:615.73,c:667,i:3678},
+    "Sea Life Brighton": {s:544.84,c:406,i:1882}, "SEA LIFE London Aquarium - Entry Ticket": {s:312.98,c:190,i:2021},
+    "Paradox Museum London: Entry Ticket": {s:877.33,c:716,i:4711},
+    "Tower Bridge Entry Tickets": {s:232.96,c:234,i:2026},
+    "Madame Tussauds London - Standard Entry": {s:154.08,c:99,i:1138},
+    "The London Dungeon Entry Ticket": {s:366.35,c:237,i:1839},
+    "The Edinburgh Dungeons Entry Ticket": {s:300.61,c:247,i:1301},
+    "Westminster Abbey: Entry Ticket": {s:442.46,c:265,i:2995},
+    "Stonehenge Entry Tickets": {s:346.60,c:304,i:2440},
+    "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:128.35,c:103,i:1208},
+    "Lift 109 at Battersea Power Station": {s:300.69,c:296,i:2035},
+    "Palace of Holyroodhouse Entry Tickets": {s:129.77,c:118,i:720},
+    "Uber Boat by Thames Clippers": {s:224.76,c:348,i:2857},
+    "London: HMS Belfast Tickets": {s:378.36,c:258,i:1189},
+    "Kensington Palace: Entry Ticket": {s:130.82,c:86,i:767},
+    "Shrek's Adventure London Entry Ticket": {s:162.54,c:89,i:987},
+    "St Paul's Cathedral": {s:66.22,c:111,i:497},
+    "Harry Potter Studio Tour departure from Victoria/Baker Street": {s:69.51,c:70,i:295},
+    "Harry Potter Studio Tour departure from Kings Cross Station": {s:69.51,c:70,i:295},
+    "London Zoo: Entry Ticket": {s:129.73,c:81,i:1811},
+    "LEGOLAND Discovery Centre Birmingham": {s:79.03,c:64,i:247},
+    "Cadbury World Birmingham": {s:77.35,c:55,i:240},
+    "London Eye Same Day Entry Ticket": {s:127.99,c:31,i:585},
+    "SEA LIFE Manchester Entry Ticket": {s:150.95,c:40,i:338}
+  },
+  "week3": {
+    "Frameless - Immersive Art Experience London": {s:2660.47,c:2121,i:8745},
+    "Edinburgh Castle: Entry Ticket + Guided Tour": {s:859.67,c:828,i:3381},
+    "SEA LIFE London Aquarium - Entry Ticket": {s:500.43,c:268,i:3314},
+    "SEA LIFE Birmingham": {s:369.96,c:453,i:2090},
+    "Paradox Museum London: Entry Ticket": {s:740.65,c:685,i:4423},
+    "LEGOLAND Windsor (with optional transfers)": {s:950.13,c:516,i:3490},
+    "Tower Bridge Entry Tickets": {s:96.51,c:115,i:1255},
+    "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:203.24,c:191,i:1601},
+    "Climb Up at The O2": {s:595.67,c:375,i:1864},
+    "Lift 109 at Battersea Power Station": {s:504.20,c:319,i:2456},
+    "Sea Life Brighton": {s:328.54,c:356,i:1636},
+    "Madame Tussauds London - Standard Entry": {s:158.97,c:99,i:921},
+    "London Zoo: Entry Ticket": {s:158.93,c:106,i:1285},
+    "St Paul's Cathedral": {s:62.94,c:95,i:446},
+    "Cadbury World Birmingham": {s:167.90,c:314,i:1176},
+    "The London Dungeon Entry Ticket": {s:216.57,c:135,i:994},
+    "Stonehenge Entry Tickets": {s:205.13,c:162,i:1054},
+    "Churchill War Rooms": {s:621.39,c:294,i:1893},
+    "Shrek's Adventure London Entry Ticket": {s:9.21,c:10,i:142},
+    "London: HMS Belfast Tickets": {s:203.21,c:113,i:441},
+    "Westminster Abbey: Entry Ticket": {s:392.59,c:171,i:2073},
+    "LEGOLAND Discovery Centre Birmingham": {s:185.27,c:233,i:899},
+    "The Edinburgh Dungeons Entry Ticket": {s:79.18,c:58,i:241},
+    "Palace of Holyroodhouse Entry Tickets": {s:159.56,c:152,i:1001},
+    "Uber Boat by Thames Clippers": {s:196.51,c:365,i:2264},
+    "Arsenal - Emirates Stadium Tour": {s:0,c:0,i:0},
+    "SEA LIFE Manchester Entry Ticket": {s:119.48,c:37,i:343}
+  },
+  "week4": {
+    "Frameless - Immersive Art Experience London": {s:690.29,c:681,i:2926},
+    "Edinburgh Castle: Entry Ticket + Guided Tour": {s:380.32,c:321,i:1264},
+    "LEGOLAND Windsor (with optional transfers)": {s:186.18,c:118,i:852},
+    "Paradox Museum London: Entry Ticket": {s:229.33,c:180,i:1413},
+    "Climb Up at The O2": {s:204.16,c:176,i:741},
+    "SEA LIFE London Aquarium - Entry Ticket": {s:161.51,c:122,i:1098},
+    "Westminster Abbey: Entry Ticket": {s:145.85,c:74,i:861},
+    "The Edinburgh Dungeons Entry Ticket": {s:143.11,c:100,i:471},
+    "Lift 109 at Battersea Power Station": {s:120.76,c:84,i:544},
+    "SEA LIFE Birmingham": {s:82.37,c:154,i:682},
+    "Sea Life Brighton": {s:78.64,c:113,i:484},
+    "The London Dungeon Entry Ticket": {s:71.53,c:54,i:416},
+    "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:64.36,c:63,i:393},
+    "Palace of Holyroodhouse Entry Tickets": {s:62.33,c:76,i:335},
+    "London Zoo: Entry Ticket": {s:59.33,c:40,i:344},
+    "LEGOLAND Discovery Centre Birmingham": {s:57.23,c:95,i:427},
+    "Stonehenge Entry Tickets": {s:56.06,c:49,i:468},
+    "Cadbury World Birmingham": {s:48.72,c:168,i:566},
+    "Uber Boat by Thames Clippers": {s:41.87,c:120,i:770},
+    "Madame Tussauds London - Standard Entry": {s:35.30,c:31,i:269},
+    "The London Eye": {s:33.98,c:11,i:124},
+    "Tower Bridge Entry Tickets": {s:32.55,c:32,i:371},
+    "Kensington Palace: Entry Ticket": {s:24.00,c:11,i:116},
+    "St Paul's Cathedral": {s:16.24,c:16,i:65}
+  }
+},
+"NL": {
+  "week1": {
+    "Anne Frank & Jewish Quarter Guided Tour": {s:479.24,c:638,i:2539},
+    "THIS IS HOLLAND: Entry Ticket": {s:179.31,c:156,i:921},
+    "NEMO Science Museum: Entry Ticket": {s:230.93,c:219,i:1038},
+    "Moco Museum Amsterdam: Entry Ticket": {s:144.38,c:105,i:1089},
+    "Keukenhof Gardens with transport": {s:320.30,c:240,i:1754},
+    "Heineken Experience: Entry Ticket": {s:261.70,c:150,i:1669},
+    "Van Gogh Museum: Entry Ticket": {s:293.52,c:117,i:1121},
+    "AMAZE: The Immersive Experience": {s:247.86,c:72,i:567},
+    "Fabrique des Lumières: From Vermeer to Van Gogh": {s:317.50,c:154,i:1068},
+    "Stedelijk Museum Amsterdam: Entry Ticket": {s:100.26,c:71,i:428},
+    "Efteling: Entry Ticket": {s:193.43,c:68,i:867},
+    "The Rembrandt House Museum: Entry Ticket + Multimedia Guide": {s:137.12,c:60,i:396},
+    "The Upside Down: Entry Ticket": {s:285.53,c:194,i:1369},
+    "XtraCold Icebar Experience: Skip The Line + 3 Drinks": {s:149.44,c:47,i:560},
+    "Madame Tussauds Amsterdam: Entry Ticket": {s:139.35,c:66,i:580}
+  },
+  "week2": {
+    "NEMO Science Museum: Entry Ticket": {s:283.24,c:243,i:1009},
+    "Anne Frank & Jewish Quarter Guided Tour": {s:767.48,c:972,i:4204},
+    "Keukenhof Gardens with transport": {s:717.71,c:490,i:3945},
+    "Heineken Experience: Entry Ticket": {s:530.37,c:336,i:2947},
+    "Moco Museum Amsterdam: Entry Ticket": {s:132.44,c:96,i:749},
+    "THIS IS HOLLAND: Entry Ticket": {s:167.00,c:190,i:1314},
+    "Van Gogh Museum: Entry Ticket": {s:330.95,c:127,i:908},
+    "AMAZE: The Immersive Experience": {s:189.56,c:66,i:528},
+    "The Upside Down: Entry Ticket": {s:517.42,c:299,i:1996},
+    "Madame Tussauds Amsterdam: Entry Ticket": {s:135.09,c:67,i:534},
+    "XtraCold Icebar Experience: Skip The Line + 3 Drinks": {s:126.21,c:60,i:550},
+    "Stedelijk Museum Amsterdam: Entry Ticket": {s:104.99,c:79,i:469},
+    "Fabrique des Lumières: Monet, Master of Impressionism": {s:310.47,c:210,i:1384},
+    "Efteling: Entry Ticket": {s:213.76,c:55,i:660},
+    "Rembrandts Amsterdam Experience: Entry Ticket": {s:118.15,c:56,i:423},
+    "A'DAM Lookout: Entry Ticket + Lunch or Dinner": {s:52.84,c:25,i:284}
+  },
+  "week3": {
+    "Anne Frank & Jewish Quarter Guided Tour": {s:674.70,c:735,i:3267},
+    "NEMO Science Museum: Entry Ticket": {s:336.94,c:264,i:1116},
+    "Keukenhof Gardens with transport": {s:328.46,c:217,i:1774},
+    "Moco Museum Amsterdam: Entry Ticket": {s:123.29,c:83,i:714},
+    "Van Gogh Museum: Entry Ticket": {s:199.63,c:112,i:526},
+    "THIS IS HOLLAND: Entry Ticket": {s:164.01,c:175,i:1069},
+    "The Upside Down: Entry Ticket": {s:480.00,c:235,i:1468},
+    "Rembrandts Amsterdam Experience: Entry Ticket": {s:137.56,c:71,i:474},
+    "XtraCold Icebar Experience: Skip The Line + 3 Drinks": {s:147.75,c:61,i:499},
+    "Stedelijk Museum Amsterdam: Entry Ticket": {s:89.76,c:71,i:346},
+    "Fabrique des Lumières: From Vermeer to Van Gogh": {s:324.67,c:223,i:1361},
+    "AMAZE: The Immersive Experience": {s:126.61,c:43,i:405},
+    "Heineken Experience: Entry Ticket": {s:560.08,c:305,i:2655},
+    "Efteling: Entry Ticket": {s:196.18,c:77,i:667},
+    "Madame Tussauds Amsterdam: Entry Ticket": {s:145.27,c:76,i:512},
+    "A'DAM Lookout: Fast Track Ticket + 1 Drink": {s:184.73,c:81,i:1638}
+  },
+  "week4": {
+    "Anne Frank & Jewish Quarter Guided Tour": {s:154.37,c:193,i:885},
+    "NEMO Science Museum: Entry Ticket": {s:88.43,c:101,i:386},
+    "Fabrique des Lumières: From Vermeer to Van Gogh": {s:95.63,c:97,i:491},
+    "The Upside Down: Entry Ticket": {s:89.44,c:73,i:384},
+    "Efteling: Entry Ticket": {s:47.73,c:26,i:308},
+    "AMAZE: The Immersive Experience": {s:37.48,c:9,i:92},
+    "Moco Museum Amsterdam: Entry Ticket": {s:28.87,c:23,i:166},
+    "Stedelijk Museum Amsterdam: Entry Ticket": {s:27.59,c:22,i:106},
+    "Madame Tussauds Amsterdam: Entry Ticket": {s:25.97,c:14,i:140},
+    "THIS IS HOLLAND: Entry Ticket": {s:24.85,c:35,i:154}
+  }
+},
+"FR": {
+  "week1": {},
+  "week2": {
+    "Paris: Arc de Triomphe Rooftop Tickets": {s:60.97,c:44,i:284},
+    "Musée de l'Orangerie: Entry Ticket": {s:83.89,c:59,i:385},
+    "Musée Rodin: Skip The Line": {s:87.11,c:34,i:251},
+    "Palace of Versailles: Entry Ticket + Gardens + Estate of Trianon": {s:63.54,c:33,i:303},
+    "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": {s:65.87,c:25,i:177}
+  },
+  "week3": {
+    "Paris: Arc de Triomphe Rooftop Tickets": {s:213.11,c:143,i:895},
+    "Musée de l'Orangerie: Entry Ticket": {s:350.27,c:344,i:2170},
+    "Musée Rodin: Skip The Line": {s:347.73,c:139,i:1072},
+    "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": {s:213.04,c:101,i:814},
+    "Centre Pompidou: Exhibition + Rooftop Access": {s:0,c:0,i:0}
+  },
+  "week4": {
+    "Paris: Arc de Triomphe Rooftop Tickets": {s:127.26,c:86,i:435},
+    "Musée de l'Orangerie: Entry Ticket": {s:110.36,c:96,i:532},
+    "Musée Rodin: Skip The Line": {s:103.51,c:47,i:285},
+    "Musée d'Orsay Paris Dedicated Entrance": {s:49.86,c:33,i:412}
+  }
+}
+};
+
+// ========== HELPER FUNCTIONS ==========
+function fmt(n) { return n.toLocaleString('en-US', {maximumFractionDigits: 0}); }
+function fmt2(n) { return n.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
+
+function getRows(week, countryFilter) {
+    const rows = [];
+    for (const [countryName, weeks] of Object.entries(revenueData)) {
+        const cc = countryCode[countryName];
+        if (countryFilter !== 'all' && cc !== countryFilter) continue;
+        const ccy = countryCurrency[countryName];
+        const fx = fxRate[ccy];
+        const weekRevenue = weeks[week] || {};
+        const weekAds = adsData[cc]?.[week] || {};
+
+        for (const [name, revLocal] of Object.entries(weekRevenue)) {
+            const revAed = revLocal * fx;
+            const netRev = revAed * NET_REV_RATE;
+            const ad = weekAds[name] || null;
+            const spend = ad ? ad.s : 0;
+            const clicks = ad ? ad.c : 0;
+            const impressions = ad ? ad.i : 0;
+            const cpc = clicks > 0 ? spend / clicks : 0;
+            const roi = spend > 0 ? netRev / spend : 0;
+            rows.push({ name, country: cc, ccy, revLocal, revAed, netRev, spend, clicks, impressions, cpc, roi });
+        }
+    }
+    return rows;
+}
+
+function switchWeek(w) {
+    currentWeek = w;
+    ['week1','week2','week3','week4'].forEach(wk => {
+        document.getElementById(wk+'-btn').className = 'btn-pill ' + (wk === w ? 'btn-active' : 'btn-inactive');
+    });
+    renderAll();
+}
+
+function switchCountry(c) {
+    currentCountry = c;
+    ['all','UK','NL','FR'].forEach(cc => {
+        const id = cc === 'all' ? 'country-all' : 'country-' + cc;
+        document.getElementById(id).className = 'btn-pill ' + (cc === c ? 'btn-active' : 'btn-inactive');
+    });
+    renderAll();
+}
+
+function updateKPIs() {
+    const rows = getRows(currentWeek, currentCountry);
+    const totalRev = rows.reduce((s,r) => s + r.revAed, 0);
+    const totalNetRev = totalRev * NET_REV_RATE;
+    const totalSpend = rows.reduce((s,r) => s + r.spend, 0);
+    const totalClicks = rows.reduce((s,r) => s + r.clicks, 0);
+    const roi = totalSpend > 0 ? totalNetRev / totalSpend : 0;
+
+    document.getElementById('kpi-attractions').textContent = rows.length;
+    document.getElementById('kpi-revenue').textContent = fmt(totalRev);
+    document.getElementById('kpi-netrev').textContent = fmt(totalNetRev);
+    document.getElementById('kpi-spend').textContent = fmt(totalSpend);
+    document.getElementById('kpi-roi').textContent = roi > 0 ? roi.toFixed(2) + 'x' : '—';
+    document.getElementById('kpi-clicks').textContent = fmt(totalClicks);
+}
+
+function renderTable() {
+    const rows = getRows(currentWeek, currentCountry);
+    const search = (document.getElementById('searchBox').value || '').toLowerCase();
+    let filtered = rows.filter(r => r.name.toLowerCase().includes(search));
+
+    filtered.sort((a,b) => {
+        let va = a[sortCol], vb = b[sortCol];
+        if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+        if (va < vb) return sortAsc ? -1 : 1;
+        if (va > vb) return sortAsc ? 1 : -1;
+        return 0;
+    });
+
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = filtered.map(r => {
+        const ccySymbol = r.ccy === 'GBP' ? '£' : '€';
+        const roiClass = r.roi >= 1 ? 'positive' : r.roi > 0 ? 'neutral' : '';
+        return `<tr>
+            <td style="font-weight:500;">${r.name}</td>
+            <td>${countryFlag[r.country]} ${r.country}</td>
+            <td>${ccySymbol}${fmt2(r.revLocal)}</td>
+            <td>${fmt(r.revAed)} AED</td>
+            <td style="color:var(--pl-day);">${fmt(r.netRev)} AED</td>
+            <td>${r.spend > 0 ? fmt(r.spend) + ' AED' : '—'}</td>
+            <td class="${roiClass}">${r.spend > 0 ? r.roi.toFixed(2) + 'x' : '—'}</td>
+            <td>${r.clicks > 0 ? fmt(r.clicks) : '—'}</td>
+            <td>${r.impressions > 0 ? fmt(r.impressions) : '—'}</td>
+            <td>${r.clicks > 0 ? fmt2(r.cpc) + ' AED' : '—'}</td>
+        </tr>`;
+    }).join('');
+}
+
+function sortTable(col) {
+    if (sortCol === col) { sortAsc = !sortAsc; } else { sortCol = col; sortAsc = false; }
+    renderTable();
+}
+
+function renderTrendChart() {
+    if (chartTrend) chartTrend.destroy();
+    const labels = ['Mar 9-15', 'Mar 16-22', 'Mar 23-29', 'Mar 30-31'];
+    const revs = [], netRevs = [], spends = [];
+    ['week1','week2','week3','week4'].forEach(w => {
+        const rows = getRows(w, currentCountry);
+        const rev = rows.reduce((s,r) => s + r.revAed, 0);
+        revs.push(Math.round(rev));
+        netRevs.push(Math.round(rev * NET_REV_RATE));
+        spends.push(Math.round(rows.reduce((s,r) => s + r.spend, 0)));
+    });
+    chartTrend = new Chart(document.getElementById('revenueTrendChart'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                { label: 'Revenue (AED)', data: revs, borderColor: '#79E2FF', backgroundColor: 'rgba(121,226,255,0.1)', fill: true, tension: 0.3, pointRadius: 6, pointBackgroundColor: '#79E2FF', borderWidth: 3 },
+                { label: 'Ad Spend (AED)', data: spends, borderColor: '#C7F88A', backgroundColor: 'rgba(199,248,138,0.1)', fill: true, tension: 0.3, pointRadius: 6, pointBackgroundColor: '#C7F88A', borderWidth: 3 },
+                { label: 'Net Revenue (AED)', data: netRevs, borderColor: '#00A5D3', backgroundColor: 'rgba(0,165,211,0.08)', fill: false, tension: 0.3, pointRadius: 6, pointBackgroundColor: '#00A5D3', borderWidth: 2, borderDash: [5,5] }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#E0F0F4', usePointStyle: true, padding: 20 } },
+                tooltip: { backgroundColor: '#0A181C', borderColor: '#1A3540', borderWidth: 1, titleColor: '#79E2FF', bodyColor: '#E0F0F4',
+                    callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString() + ' AED' }
+                }
+            },
+            scales: {
+                x: { ticks: { color: '#6B9AAB' }, grid: { color: 'rgba(26,53,64,0.5)' } },
+                y: { ticks: { color: '#6B9AAB', callback: v => (v/1000).toFixed(0) + 'K' }, grid: { color: 'rgba(26,53,64,0.5)' } }
+            }
+        }
+    });
+}
+
+function renderRevCostChart() {
+    if (chartRevCost) chartRevCost.destroy();
+    const rows = getRows(currentWeek, currentCountry).filter(r => r.spend > 0);
+    rows.sort((a,b) => b.netRev - a.netRev);
+    const top = rows.slice(0, 15);
+    const labels = top.map(r => r.name.length > 30 ? r.name.substring(0,28) + '…' : r.name);
+    chartRevCost = new Chart(document.getElementById('revenueVsCostChart'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [
+                { label: 'Net Revenue (AED)', data: top.map(r => Math.round(r.netRev)), backgroundColor: 'rgba(121,226,255,0.8)', borderRadius: 4 },
+                { label: 'Ad Spend (AED)', data: top.map(r => Math.round(r.spend)), backgroundColor: 'rgba(199,248,138,0.8)', borderRadius: 4 }
+            ]
+        },
+        options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#E0F0F4', usePointStyle: true } },
+                tooltip: { backgroundColor: '#0A181C', borderColor: '#1A3540', borderWidth: 1, titleColor: '#79E2FF', bodyColor: '#E0F0F4' }
+            },
+            scales: {
+                x: { ticks: { color: '#6B9AAB', callback: v => (v/1000).toFixed(0) + 'K' }, grid: { color: 'rgba(26,53,64,0.3)' } },
+                y: { ticks: { color: '#E0F0F4', font: { size: 11 } }, grid: { display: false } }
+            }
+        }
+    });
+}
+
+function renderCountryChart() {
+    if (chartCountry) chartCountry.destroy();
+    const totals = {};
+    ['UK','NL','FR'].forEach(cc => {
+        const rows = getRows(currentWeek, cc);
+        totals[cc] = rows.reduce((s,r) => s + r.revAed, 0);
+    });
+    chartCountry = new Chart(document.getElementById('countryChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['🇬🇧 UK', '🇳🇱 Netherlands', '🇫🇷 France'],
+            datasets: [{ data: [totals.UK, totals.NL, totals.FR], backgroundColor: ['#79E2FF', '#C7F88A', '#00A5D3'], borderColor: '#0A181C', borderWidth: 3 }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#E0F0F4', padding: 20, font: { size: 13 } } },
+                tooltip: { backgroundColor: '#0A181C', borderColor: '#1A3540', borderWidth: 1, titleColor: '#79E2FF', bodyColor: '#E0F0F4',
+                    callbacks: { label: ctx => ctx.label + ': ' + Math.round(ctx.parsed).toLocaleString() + ' AED' }
+                }
+            }
+        }
+    });
+}
+
+function renderAll() { updateKPIs(); renderTrendChart(); renderRevCostChart(); renderCountryChart(); renderTable(); }
+
+// URL param: auto-select country from ?country=UK|NL|FR and highlight nav tab
+(function() {
+    const params = new URLSearchParams(window.location.search);
+    const c = params.get('country');
+    if (c && ['UK','NL','FR'].includes(c)) {
+        switchCountry(c);
+    }
+    // Highlight the correct nav tab
+    const navMap = {UK:'nav-UK', NL:'nav-NL', FR:'nav-FR'};
+    if (c && navMap[c]) {
+        document.getElementById(navMap[c])?.classList.add('active');
+    }
+})();
+
+renderAll();
+</script>
+</body>
+</html>
