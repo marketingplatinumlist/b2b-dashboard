@@ -88,9 +88,7 @@
     <!-- Top-level page nav -->
     <div class="mb-4" style="border-bottom: 2px solid var(--pl-border); display: flex; gap: 0; overflow-x: auto;">
         <a href="/index.html" class="nav-tab" style="text-decoration:none;">Google Ads & LTS</a>
-        <a href="/attractions.html?country=UK" id="nav-UK" class="nav-tab" style="text-decoration:none;">UK Attractions</a>
-        <a href="/attractions.html?country=NL" id="nav-NL" class="nav-tab" style="text-decoration:none;">NL Attractions</a>
-        <a href="/attractions.html?country=FR" id="nav-FR" class="nav-tab" style="text-decoration:none;">France Attractions</a>
+        <a href="/attractions.html" class="nav-tab active" style="text-decoration:none;">Attractions</a>
     </div>
 
     <!-- Country Filter (sub-filter within attractions) -->
@@ -706,17 +704,12 @@ function renderCountryChart() {
 
 function renderAll() { updateKPIs(); renderTrendChart(); renderRevCostChart(); renderCountryChart(); renderTable(); }
 
-// URL param: auto-select country from ?country=UK|NL|FR and highlight nav tab
+// URL param: auto-select country from ?country=UK|NL|FR
 (function() {
     const params = new URLSearchParams(window.location.search);
     const c = params.get('country');
     if (c && ['UK','NL','FR'].includes(c)) {
         switchCountry(c);
-    }
-    // Highlight the correct nav tab
-    const navMap = {UK:'nav-UK', NL:'nav-NL', FR:'nav-FR'};
-    if (c && navMap[c]) {
-        document.getElementById(navMap[c])?.classList.add('active');
     }
 })();
 
