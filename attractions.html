@@ -104,7 +104,8 @@
         <button class="btn-pill btn-inactive" id="week1-btn" onclick="switchWeek('week1')">Mar 9-15</button>
         <button class="btn-pill btn-inactive" id="week2-btn" onclick="switchWeek('week2')">Mar 16-22</button>
         <button class="btn-pill btn-inactive" id="week3-btn" onclick="switchWeek('week3')">Mar 23-29</button>
-        <button class="btn-pill btn-active" id="week4-btn" onclick="switchWeek('week4')">Mar 30-31</button>
+        <button class="btn-pill btn-inactive" id="week4-btn" onclick="switchWeek('week4')">Mar 30-31</button>
+        <button class="btn-pill btn-active" id="week5-btn" onclick="switchWeek('week5')">Mar 30 - Apr 2</button>
     </div>
 
     <!-- KPIs -->
@@ -119,7 +120,7 @@
 
     <!-- Revenue Trend Chart -->
     <div class="card p-6 mb-8">
-        <h2 class="text-lg font-semibold mb-4" style="color: var(--pl-monday);">Weekly Revenue Trend (3-Week)</h2>
+        <h2 class="text-lg font-semibold mb-4" style="color: var(--pl-monday);">Weekly Revenue Trend (5-Week)</h2>
         <div style="position: relative; height: 280px;"><canvas id="revenueTrendChart"></canvas></div>
     </div>
 
@@ -654,7 +655,7 @@ function getRows(week, countryFilter) {
 
 function switchWeek(w) {
     currentWeek = w;
-    ['week1','week2','week3','week4'].forEach(wk => {
+    ['week1','week2','week3','week4','week5'].forEach(wk => {
         document.getElementById(wk+'-btn').className = 'btn-pill ' + (wk === w ? 'btn-active' : 'btn-inactive');
     });
     renderAll();
@@ -724,9 +725,9 @@ function sortTable(col) {
 
 function renderTrendChart() {
     if (chartTrend) chartTrend.destroy();
-    const labels = ['Mar 9-15', 'Mar 16-22', 'Mar 23-29', 'Mar 30-31'];
+    const labels = ['Mar 9-15', 'Mar 16-22', 'Mar 23-29', 'Mar 30-31', 'Mar 30-Apr 2'];
     const revs = [], netRevs = [], spends = [];
-    ['week1','week2','week3','week4'].forEach(w => {
+    ['week1','week2','week3','week4','week5'].forEach(w => {
         const rows = getRows(w, currentCountry);
         const rev = rows.reduce((s,r) => s + r.revAed, 0);
         revs.push(Math.round(rev));
