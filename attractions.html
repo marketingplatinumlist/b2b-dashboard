@@ -554,7 +554,7 @@ function sortTable(col) {
 
 function renderTrendChart() {
     if (chartTrend) chartTrend.destroy();
-    const labels = ['Mar 9-15', 'Mar 16-22', 'Mar 23-29', 'Mar 30-31', 'Mar 30-Apr 2'];
+    const labels = ['Mar 9-15', 'Mar 16-22', 'Mar 23-29', 'Mar 30-Apr 5'];
     const revs = [], netRevs = [], spends = [];
     ['week1','week2','week3','week4'].forEach(w => {
         const rows = getRows(w, currentCountry);
@@ -626,7 +626,7 @@ function renderCountryChart() {
     chartCountry = new Chart(document.getElementById('countryChart'), {
         type: 'doughnut',
         data: {
-            labels: ['Mar 9-15','Mar 16-22','Mar 23-29','Mar 30-Apr 5'],
+            labels: ['United Kingdom','Netherlands','France'],
             datasets: [{ data: [totals.UK, totals.NL, totals.FR], backgroundColor: ['#79E2FF', '#C7F88A', '#00A5D3'], borderColor: '#0A181C', borderWidth: 3 }]
         },
         options: {
