@@ -101,10 +101,10 @@
 
     <!-- Week Selector -->
     <div class="mb-8 flex gap-3">
-        <button class="btn-pill btn-inactive" id="week1-btn" onclick="switchWeek('week1')">Week 1 (Mar 9-15)</button>
-        <button class="btn-pill btn-inactive" id="week2-btn" onclick="switchWeek('week2')">Week 2 (Mar 16-22)</button>
-        <button class="btn-pill btn-inactive" id="week3-btn" onclick="switchWeek('week3')">Week 3 (Mar 23-29)</button>
-        <button class="btn-pill btn-inactive" id="week4-btn" onclick="switchWeek('week4')">Apr 6 - Apr 12</button>
+        <button class="btn-pill btn-inactive" id="week1-btn" onclick="switchWeek('week1')">Week 1 (Mar 16-22)</button>
+        <button class="btn-pill btn-inactive" id="week2-btn" onclick="switchWeek('week2')">Week 2 (Mar 23-29)</button>
+        <button class="btn-pill btn-inactive" id="week3-btn" onclick="switchWeek('week3')">Week 3 (Apr 6-12)</button>
+        <button class="btn-pill btn-inactive" id="week4-btn" onclick="switchWeek('week4')">Apr 13 - Apr 19</button>
         
     </div>
 
@@ -179,33 +179,6 @@ let chartTrend = null, chartRevCost = null, chartCountry = null;
 const revenueData = {
   "United Kingdom": {
     "week1": {
-      "Uber Boat by Thames Clippers": 287,
-      "Frameless - Immersive Art Experience London": 3470.5,
-      "Sea Life Brighton": 252,
-      "Tower Bridge Entry Tickets": 142,
-      "Lift 109 at Battersea Power Station": 107.5,
-      "Churchill War Rooms": 2899,
-      "Climb Up at The O2": 458,
-      "Stonehenge Entry Tickets": 160.5,
-      "Shrek's Adventure London Entry Ticket": 224,
-      "SEA LIFE Birmingham": 504,
-      "SEA LIFE London Aquarium - Entry Ticket": 446,
-      "Kensington Palace: Entry Ticket": 49.4,
-      "Madame Tussauds London - Standard Entry": 315,
-      "Edinburgh Castle: Entry Ticket + Guided Tour": 1487,
-      "LEGOLAND Windsor (with optional transfers)": 889,
-      "St Paul's Cathedral": 403,
-      "London: HMS Belfast Tickets": 158.1,
-      "Paradox Museum London: Entry Ticket": 208,
-      "Hampton Court Palace, Gardens & Maze: Entry Ticket": 234,
-      "Westminster Abbey: Entry Ticket": 56,
-      "The London Dungeon Entry Ticket": 106,
-      "The Edinburgh Dungeons Entry Ticket": 20,
-      "Palace of Holyroodhouse Entry Tickets": 435,
-      "London Dungeon, SEA LIFE London & Madame Tussauds - 3 way ticket": 108,
-      "Harry Potter Studio Tour departure from Victoria/Baker Street": 473
-    },
-    "week2": {
       "Frameless - Immersive Art Experience London": 6916.5,
       "Madame Tussauds London - Standard Entry": 551,
       "Tower Bridge Entry Tickets": 475,
@@ -235,7 +208,7 @@ const revenueData = {
       "London Eye + Madame Tussauds London - 2 way ticket": 98,
       "LEGOLAND Discovery Centre Birmingham": 196
     },
-    "week3": {
+    "week2": {
       "Frameless - Immersive Art Experience London": 4768,
       "Edinburgh Castle: Entry Ticket + Guided Tour": 1574,
       "SEA LIFE Birmingham": 1008,
@@ -261,7 +234,7 @@ const revenueData = {
       "Westminster Abbey: Entry Ticket": 57,
       "Uber Boat by Thames Clippers": 34.2
     },
-    "week4": {
+    "week3": {
       "Frameless - Immersive Art Experience London": 8948.5,
       "SEA LIFE London Aquarium - Entry Ticket": 1886,
       "London: HMS Belfast Tickets": 1428.3,
@@ -290,26 +263,40 @@ const revenueData = {
       "LEGOLAND Windsor (with optional transfers)": 1500,
       "Shrek's Adventure London Entry Ticket": 42.5,
       "London Tour": 237
+    },
+    "week4": {
+      "The London Eye": 252,
+      "Edinburgh Castle: Entry Ticket + Guided Tour": 3765,
+      "Frameless - Immersive Art Experience London": 6827,
+      "Sea Life Brighton": 978,
+      "St Paul's Cathedral": 500,
+      "Tower Bridge Entry Tickets": 195.7,
+      "SEA LIFE Birmingham": 280,
+      "Climb Up at The O2": 162,
+      "SEA LIFE London Aquarium - Entry Ticket": 913,
+      "London: HMS Belfast Tickets": 1104,
+      "Paradox Museum London: Entry Ticket": 787,
+      "Palace of Holyroodhouse Entry Tickets": 3097,
+      "Westminster Abbey: Entry Ticket": 796,
+      "London Zoo: Entry Ticket": 633.18,
+      "Uber Boat by Thames Clippers": 156.65,
+      "Madame Tussauds London - Standard Entry": 308,
+      "The London Dungeon Entry Ticket": 765.5,
+      "Stonehenge Entry Tickets": 535.61,
+      "Cadbury World Birmingham": 448,
+      "LEGOLAND Windsor": 1156,
+      "The Edinburgh Dungeons Entry Ticket": 254,
+      "The View from The Shard: Entry Ticket": 38,
+      "Ramses and the Pharaohs Gold: The Exhibition": 337.5,
+      "Harry Potter Studio Tour departure from Kings Cross Station": 632,
+      "Lift 109 at Battersea Power Station": 286.15,
+      "LEGOLAND Discovery Centre Birmingham": 374,
+      "Churchill War Rooms": 95.2,
+      "Moco Museum London: Entry Ticket": 98
     }
   },
   "Netherlands": {
     "week1": {
-      "Heineken Experience: Entry Ticket": 548.9,
-      "Fabrique des Lumières: From Vermeer to Van Gogh": 106.8,
-      "Anne Frank & Jewish Quarter Guided Tour": 782,
-      "AMAZE: The Immersive Experience": 221.6,
-      "NEMO Science Museum: Entry Ticket": 324.5,
-      "Van Gogh Museum: Entry Ticket": 152.5,
-      "Moco Museum Amsterdam: Entry Ticket": 140.48,
-      "Stedelijk Museum Amsterdam: Entry Ticket": 102.5,
-      "THIS IS HOLLAND: Entry Ticket": 506,
-      "Tulip Experience Amsterdam: Entry Ticket": 100,
-      "The Rembrandt House Museum: Entry Ticket + Multimedia Guide": 43,
-      "Keukenhof Gardens with transport": 304.5,
-      "Madame Tussauds Amsterdam: Entry Ticket": 48,
-      "Efteling: Entry Ticket": 47
-    },
-    "week2": {
       "NEMO Science Museum: Entry Ticket": 1356.5,
       "Anne Frank & Jewish Quarter Guided Tour": 848,
       "Heineken Experience: Entry Ticket": 299.4,
@@ -325,7 +312,7 @@ const revenueData = {
       "Stedelijk Museum Amsterdam: Entry Ticket": 45,
       "A'DAM Lookout: Entry Ticket + Lunch or Dinner": 102
     },
-    "week3": {
+    "week2": {
       "NEMO Science Museum: Entry Ticket": 1294,
       "Anne Frank & Jewish Quarter Guided Tour": 2161,
       "Keukenhof Gardens with transport": 196,
@@ -340,7 +327,7 @@ const revenueData = {
       "XtraCold Icebar Experience: Skip The Line + 3 Drinks": 45,
       "Stedelijk Museum Amsterdam: Entry Ticket": 45
     },
-    "week4": {
+    "week3": {
       "Anne Frank & Jewish Quarter Guided Tour": 3910.5,
       "NEMO Science Museum: Entry Ticket": 2637,
       "Madame Tussauds Amsterdam: Entry Ticket": 815,
@@ -359,30 +346,57 @@ const revenueData = {
       "Amsterdam: Lovers Canal Cruise from Central Station": 49,
       "Fabrique Monet": 36,
       "Tulip Experience Amsterdam": 25
+    },
+    "week4": {
+      "Anne Frank & Jewish Quarter Guided Tour": 3844.5,
+      "NEMO Science Museum: Entry Ticket": 2048.5,
+      "Keukenhof: Entry + Roundtrip Bus Transfer from A'dam Tower": 537,
+      "THIS IS HOLLAND: Entry Ticket": 520,
+      "Efteling: Entry Ticket": 408,
+      "Madame Tussauds Amsterdam: Entry Ticket": 384,
+      "Moco Museum Amsterdam: Entry Ticket": 302.4,
+      "The Upside Down: Entry Ticket": 233.55,
+      "Heineken Experience: Entry Ticket": 224.55,
+      "ARTIS Amsterdam Royal Zoo: Entry Ticket": 222.5,
+      "The Amsterdam Dungeon: Entry Ticket": 206,
+      "A'DAM Lookout: Entry Ticket + Lunch or Dinner": 204,
+      "A'DAM Lookout: Fast Track Ticket + 1 Drink": 164,
+      "Tulip Experience Amsterdam: Entry Ticket": 150,
+      "Stedelijk Museum Amsterdam: Entry Ticket": 147.5,
+      "Museum Our Lord in the Attic: Entry Ticket + Audio Guide": 126,
+      "Van Gogh Museum: Entry Ticket": 89.25,
+      "National Holocaust Museum: Entry Ticket": 72,
+      "The Rembrandt House Museum: Entry Ticket + Multimedia Guide": 70.5
     }
   },
   "France": {
-    "week1": {},
-    "week2": {
+    "week1": {
       "Palace of Versailles: Entry Ticket + Gardens + Estate of Trianon": 52,
       "Musée de l'Orangerie: Entry Ticket": 189,
       "Musée Rodin: Skip The Line": 60,
       "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": 34
     },
-    "week3": {
+    "week2": {
       "Paris: Arc de Triomphe Rooftop Tickets": 248,
       "Musée de l'Orangerie: Entry Ticket": 81,
       "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": 68,
       "Musée Rodin: Skip The Line": 105,
       "Centre Pompidou: Exhibition + Rooftop Access": 14
     },
-    "week4": {
+    "week3": {
       "Paris: Arc de Triomphe Rooftop Tickets": 920,
       "Musee de l'Orangerie: Entry Ticket": 918,
       "Musee Rodin: Skip The Line": 808,
       "Musee de l'Armee - Les Invalides & Napoleon's Tomb: Entry Ticket": 595,
       "Musee d'Orsay Paris Dedicated Entrance": 143,
       "Seine River: Sightseeing Cruise from the Eiffel Tower": 17
+    },
+    "week4": {
+      "Paris: Arc de Triomphe Rooftop Tickets": 1004,
+      "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": 765,
+      "Musée d'Orsay Paris Dedicated Entrance": 462,
+      "Musée Rodin: Skip The Line": 435.5,
+      "Musée de l'Orangerie: Entry Ticket": 229.5
     }
   }
 };
@@ -396,22 +410,22 @@ const fxRate = { "GBP": GBP_TO_AED, "EUR": EUR_TO_AED };
 // ========== PER-ATTRACTION GOOGLE ADS DATA (clubbed Perf Max + base) ==========
 const adsData = {
   "UK": {
-  "week1": {"Churchill War Rooms": {s:1415.93,c:856,i:15439}, "Frameless - Immersive Art Experience London": {s:1592.16,c:1535,i:7025}, "Edinburgh Castle: Entry Ticket + Guided Tour": {s:419.65,c:755,i:2767}, "LEGOLAND Windsor (with optional transfers)": {s:231.97,c:213,i:1480}, "Climb Up at The O2": {s:502.3,c:396,i:2396}, "SEA LIFE Birmingham": {s:420.24,c:560,i:2987}, "Sea Life Brighton": {s:343.72,c:223,i:904}, "SEA LIFE London Aquarium - Entry Ticket": {s:273.22,c:194,i:2023}, "Paradox Museum London: Entry Ticket": {s:206.31,c:316,i:2148}, "Tower Bridge Entry Tickets": {s:196.04,c:171,i:1476}, "Madame Tussauds London - Standard Entry": {s:194.66,c:125,i:1063}, "The London Dungeon Entry Ticket": {s:145.78,c:110,i:688}, "The Edinburgh Dungeons Entry Ticket": {s:181.76,c:185,i:1100}, "Westminster Abbey: Entry Ticket": {s:179.42,c:135,i:1130}, "Stonehenge Entry Tickets": {s:234.95,c:216,i:1549}, "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:144.4,c:113,i:1473}, "Lift 109 at Battersea Power Station": {s:255.94,c:239,i:1951}, "Palace of Holyroodhouse Entry Tickets": {s:149.67,c:116,i:683}, "Uber Boat by Thames Clippers": {s:106.97,c:206,i:1854}, "London: HMS Belfast Tickets": {s:204.3,c:124,i:587}, "Kensington Palace: Entry Ticket": {s:142.02,c:73,i:779}, "Shrek's Adventure London Entry Ticket": {s:205.09,c:87,i:1210}, "St Paul's Cathedral": {s:72.72,c:139,i:581}, "Harry Potter Studio Tour departure from Victoria/Baker Street": {s:74.73,c:89,i:414}, "SEA LIFE Manchester Entry Ticket": {s:135.15,c:36,i:583}},
-  "week2": {"Frameless - Immersive Art Experience London": {s:3854.2,c:2320,i:9995}, "Churchill War Rooms": {s:1991.16,c:1051,i:8350}, "Edinburgh Castle: Entry Ticket + Guided Tour": {s:1625.93,c:1761,i:6611}, "LEGOLAND Windsor (with optional transfers)": {s:1726.76,c:994,i:6439}, "Climb Up at The O2": {s:723.12,c:494,i:2794}, "SEA LIFE Birmingham": {s:615.73,c:667,i:3678}, "Sea Life Brighton": {s:544.84,c:406,i:1882}, "SEA LIFE London Aquarium - Entry Ticket": {s:312.98,c:190,i:2021}, "Paradox Museum London: Entry Ticket": {s:877.33,c:716,i:4711}, "Tower Bridge Entry Tickets": {s:232.96,c:234,i:2026}, "Madame Tussauds London - Standard Entry": {s:154.08,c:99,i:1138}, "The London Dungeon Entry Ticket": {s:366.35,c:237,i:1839}, "The Edinburgh Dungeons Entry Ticket": {s:300.61,c:247,i:1301}, "Westminster Abbey: Entry Ticket": {s:442.46,c:265,i:2995}, "Stonehenge Entry Tickets": {s:346.6,c:304,i:2440}, "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:128.35,c:103,i:1208}, "Lift 109 at Battersea Power Station": {s:300.69,c:296,i:2035}, "Palace of Holyroodhouse Entry Tickets": {s:129.77,c:118,i:720}, "Uber Boat by Thames Clippers": {s:224.76,c:348,i:2857}, "London: HMS Belfast Tickets": {s:378.36,c:258,i:1189}, "Kensington Palace: Entry Ticket": {s:130.82,c:86,i:767}, "Shrek's Adventure London Entry Ticket": {s:162.54,c:89,i:987}, "St Paul's Cathedral": {s:66.22,c:111,i:497}, "Harry Potter Studio Tour departure from Victoria/Baker Street": {s:69.51,c:70,i:295}, "Harry Potter Studio Tour departure from Kings Cross Station": {s:69.51,c:70,i:295}, "London Zoo: Entry Ticket": {s:129.73,c:81,i:1811}, "LEGOLAND Discovery Centre Birmingham": {s:79.03,c:64,i:247}, "Cadbury World Birmingham": {s:77.35,c:55,i:240}, "London Eye Same Day Entry Ticket": {s:127.99,c:31,i:585}, "SEA LIFE Manchester Entry Ticket": {s:150.95,c:40,i:338}},
-  "week3": {"Frameless - Immersive Art Experience London": {s:2660.47,c:2121,i:8745}, "Edinburgh Castle: Entry Ticket + Guided Tour": {s:859.67,c:828,i:3381}, "SEA LIFE London Aquarium - Entry Ticket": {s:500.43,c:268,i:3314}, "SEA LIFE Birmingham": {s:369.96,c:453,i:2090}, "Paradox Museum London: Entry Ticket": {s:740.65,c:685,i:4423}, "LEGOLAND Windsor (with optional transfers)": {s:950.13,c:516,i:3490}, "Tower Bridge Entry Tickets": {s:96.51,c:115,i:1255}, "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:203.24,c:191,i:1601}, "Climb Up at The O2": {s:595.67,c:375,i:1864}, "Lift 109 at Battersea Power Station": {s:504.2,c:319,i:2456}, "Sea Life Brighton": {s:328.54,c:356,i:1636}, "Madame Tussauds London - Standard Entry": {s:158.97,c:99,i:921}, "London Zoo: Entry Ticket": {s:158.93,c:106,i:1285}, "St Paul's Cathedral": {s:62.94,c:95,i:446}, "Cadbury World Birmingham": {s:167.9,c:314,i:1176}, "The London Dungeon Entry Ticket": {s:216.57,c:135,i:994}, "Stonehenge Entry Tickets": {s:205.13,c:162,i:1054}, "Churchill War Rooms": {s:621.39,c:294,i:1893}, "Shrek's Adventure London Entry Ticket": {s:9.21,c:10,i:142}, "London: HMS Belfast Tickets": {s:203.21,c:113,i:441}, "Westminster Abbey: Entry Ticket": {s:392.59,c:171,i:2073}, "LEGOLAND Discovery Centre Birmingham": {s:185.27,c:233,i:899}, "The Edinburgh Dungeons Entry Ticket": {s:79.18,c:58,i:241}, "Palace of Holyroodhouse Entry Tickets": {s:159.56,c:152,i:1001}, "Uber Boat by Thames Clippers": {s:196.51,c:365,i:2264}, "Arsenal - Emirates Stadium Tour": {s:0,c:0,i:0}, "SEA LIFE Manchester Entry Ticket": {s:119.48,c:37,i:343}},
-  "week4": {"Frameless - Immersive Art Experience London": {s:4685.15,c:3057,i:12577}, "Palace of Holyroodhouse Entry Tickets": {s:3881.04,c:1630,i:9150}, "Edinburgh Castle: Entry Ticket + Guided Tour": {s:3399.61,c:1881,i:8302}, "Sea Life Brighton": {s:3230.13,c:1709,i:6411}, "SEA LIFE Birmingham": {s:2698.34,c:1640,i:9270}, "LEGOLAND Windsor (with optional transfers)": {s:1441.77,c:780,i:6239}, "The London Eye": {s:1310.91,c:283,i:4133}, "SEA LIFE London Aquarium - Entry Ticket": {s:1252.31,c:655,i:7658}, "The London Dungeon Entry Ticket": {s:1158.12,c:628,i:4991}, "Churchill War Rooms": {s:936.48,c:585,i:5942}, "LEGOLAND Discovery Centre Birmingham": {s:820.8,c:647,i:3112}, "Uber Boat by Thames Clippers": {s:775.09,c:682,i:5001}, "Cadbury World Birmingham": {s:753.85,c:649,i:3649}, "Climb Up at The O2": {s:699.54,c:541,i:2738}, "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:580.04,c:403,i:4075}, "London: HMS Belfast Tickets": {s:527.59,c:407,i:1850}, "Paradox Museum London: Entry Ticket": {s:518.42,c:312,i:2806}, "London Zoo: Entry Ticket": {s:496.02,c:312,i:5115}, "Stonehenge Entry Tickets": {s:393.68,c:274,i:2472}, "St Paul's Cathedral": {s:369.56,c:160,i:909}, "Westminster Abbey: Entry Ticket": {s:360.61,c:207,i:2261}, "Madame Tussauds London - Standard Entry": {s:356.89,c:169,i:1871}, "The Edinburgh Dungeons Entry Ticket": {s:347.77,c:352,i:1722}, "Harry Potter Studio Tours": {s:281.69,c:187,i:1092}, "Kensington Palace: Entry Ticket": {s:254.5,c:119,i:1344}, "Lift 109 at Battersea Power Station": {s:247.1,c:233,i:2286}, "Moco Museum London: Entry Ticket": {s:176.81,c:100,i:775}, "Tower Bridge Entry Tickets": {s:144.71,c:85,i:938}, "SEA LIFE Manchester Entry Ticket": {s:124.39,c:41,i:635}, "Airport Transfers": {s:124.39,c:28,i:422}, "Shrek's Adventure London Entry Ticket": {s:74.45,c:37,i:428}, "Ramses and the Pharaohs Gold": {s:1.35,c:3,i:64}}
+  "week1": {"Frameless - Immersive Art Experience London": {s:3854.2,c:2320,i:9995}, "Churchill War Rooms": {s:1991.16,c:1051,i:8350}, "Edinburgh Castle: Entry Ticket + Guided Tour": {s:1625.93,c:1761,i:6611}, "LEGOLAND Windsor (with optional transfers)": {s:1726.76,c:994,i:6439}, "Climb Up at The O2": {s:723.12,c:494,i:2794}, "SEA LIFE Birmingham": {s:615.73,c:667,i:3678}, "Sea Life Brighton": {s:544.84,c:406,i:1882}, "SEA LIFE London Aquarium - Entry Ticket": {s:312.98,c:190,i:2021}, "Paradox Museum London: Entry Ticket": {s:877.33,c:716,i:4711}, "Tower Bridge Entry Tickets": {s:232.96,c:234,i:2026}, "Madame Tussauds London - Standard Entry": {s:154.08,c:99,i:1138}, "The London Dungeon Entry Ticket": {s:366.35,c:237,i:1839}, "The Edinburgh Dungeons Entry Ticket": {s:300.61,c:247,i:1301}, "Westminster Abbey: Entry Ticket": {s:442.46,c:265,i:2995}, "Stonehenge Entry Tickets": {s:346.6,c:304,i:2440}, "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:128.35,c:103,i:1208}, "Lift 109 at Battersea Power Station": {s:300.69,c:296,i:2035}, "Palace of Holyroodhouse Entry Tickets": {s:129.77,c:118,i:720}, "Uber Boat by Thames Clippers": {s:224.76,c:348,i:2857}, "London: HMS Belfast Tickets": {s:378.36,c:258,i:1189}, "Kensington Palace: Entry Ticket": {s:130.82,c:86,i:767}, "Shrek's Adventure London Entry Ticket": {s:162.54,c:89,i:987}, "St Paul's Cathedral": {s:66.22,c:111,i:497}, "Harry Potter Studio Tour departure from Victoria/Baker Street": {s:69.51,c:70,i:295}, "Harry Potter Studio Tour departure from Kings Cross Station": {s:69.51,c:70,i:295}, "London Zoo: Entry Ticket": {s:129.73,c:81,i:1811}, "LEGOLAND Discovery Centre Birmingham": {s:79.03,c:64,i:247}, "Cadbury World Birmingham": {s:77.35,c:55,i:240}, "London Eye Same Day Entry Ticket": {s:127.99,c:31,i:585}, "SEA LIFE Manchester Entry Ticket": {s:150.95,c:40,i:338}},
+  "week2": {"Frameless - Immersive Art Experience London": {s:2660.47,c:2121,i:8745}, "Edinburgh Castle: Entry Ticket + Guided Tour": {s:859.67,c:828,i:3381}, "SEA LIFE London Aquarium - Entry Ticket": {s:500.43,c:268,i:3314}, "SEA LIFE Birmingham": {s:369.96,c:453,i:2090}, "Paradox Museum London: Entry Ticket": {s:740.65,c:685,i:4423}, "LEGOLAND Windsor (with optional transfers)": {s:950.13,c:516,i:3490}, "Tower Bridge Entry Tickets": {s:96.51,c:115,i:1255}, "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:203.24,c:191,i:1601}, "Climb Up at The O2": {s:595.67,c:375,i:1864}, "Lift 109 at Battersea Power Station": {s:504.2,c:319,i:2456}, "Sea Life Brighton": {s:328.54,c:356,i:1636}, "Madame Tussauds London - Standard Entry": {s:158.97,c:99,i:921}, "London Zoo: Entry Ticket": {s:158.93,c:106,i:1285}, "St Paul's Cathedral": {s:62.94,c:95,i:446}, "Cadbury World Birmingham": {s:167.9,c:314,i:1176}, "The London Dungeon Entry Ticket": {s:216.57,c:135,i:994}, "Stonehenge Entry Tickets": {s:205.13,c:162,i:1054}, "Churchill War Rooms": {s:621.39,c:294,i:1893}, "Shrek's Adventure London Entry Ticket": {s:9.21,c:10,i:142}, "London: HMS Belfast Tickets": {s:203.21,c:113,i:441}, "Westminster Abbey: Entry Ticket": {s:392.59,c:171,i:2073}, "LEGOLAND Discovery Centre Birmingham": {s:185.27,c:233,i:899}, "The Edinburgh Dungeons Entry Ticket": {s:79.18,c:58,i:241}, "Palace of Holyroodhouse Entry Tickets": {s:159.56,c:152,i:1001}, "Uber Boat by Thames Clippers": {s:196.51,c:365,i:2264}, "Arsenal - Emirates Stadium Tour": {s:0,c:0,i:0}, "SEA LIFE Manchester Entry Ticket": {s:119.48,c:37,i:343}},
+  "week3": {"Frameless - Immersive Art Experience London": {s:4685.15,c:3057,i:12577}, "Palace of Holyroodhouse Entry Tickets": {s:3881.04,c:1630,i:9150}, "Edinburgh Castle: Entry Ticket + Guided Tour": {s:3399.61,c:1881,i:8302}, "Sea Life Brighton": {s:3230.13,c:1709,i:6411}, "SEA LIFE Birmingham": {s:2698.34,c:1640,i:9270}, "LEGOLAND Windsor (with optional transfers)": {s:1441.77,c:780,i:6239}, "The London Eye": {s:1310.91,c:283,i:4133}, "SEA LIFE London Aquarium - Entry Ticket": {s:1252.31,c:655,i:7658}, "The London Dungeon Entry Ticket": {s:1158.12,c:628,i:4991}, "Churchill War Rooms": {s:936.48,c:585,i:5942}, "LEGOLAND Discovery Centre Birmingham": {s:820.8,c:647,i:3112}, "Uber Boat by Thames Clippers": {s:775.09,c:682,i:5001}, "Cadbury World Birmingham": {s:753.85,c:649,i:3649}, "Climb Up at The O2": {s:699.54,c:541,i:2738}, "Hampton Court Palace, Gardens & Maze: Entry Ticket": {s:580.04,c:403,i:4075}, "London: HMS Belfast Tickets": {s:527.59,c:407,i:1850}, "Paradox Museum London: Entry Ticket": {s:518.42,c:312,i:2806}, "London Zoo: Entry Ticket": {s:496.02,c:312,i:5115}, "Stonehenge Entry Tickets": {s:393.68,c:274,i:2472}, "St Paul's Cathedral": {s:369.56,c:160,i:909}, "Westminster Abbey: Entry Ticket": {s:360.61,c:207,i:2261}, "Madame Tussauds London - Standard Entry": {s:356.89,c:169,i:1871}, "The Edinburgh Dungeons Entry Ticket": {s:347.77,c:352,i:1722}, "Harry Potter Studio Tours": {s:281.69,c:187,i:1092}, "Kensington Palace: Entry Ticket": {s:254.5,c:119,i:1344}, "Lift 109 at Battersea Power Station": {s:247.1,c:233,i:2286}, "Moco Museum London: Entry Ticket": {s:176.81,c:100,i:775}, "Tower Bridge Entry Tickets": {s:144.71,c:85,i:938}, "SEA LIFE Manchester Entry Ticket": {s:124.39,c:41,i:635}, "Airport Transfers": {s:124.39,c:28,i:422}, "Shrek's Adventure London Entry Ticket": {s:74.45,c:37,i:428}, "Ramses and the Pharaohs Gold": {s:1.35,c:3,i:64}},
+  "week4": {"Frameless - Immersive Art Experience London": {s:4761.82,c:3128,i:12417}, "Palace of Holyroodhouse Entry Tickets": {s:3073.89,c:1310,i:8647}, "Edinburgh Castle: Entry Ticket + Guided Tour": {s:2458.33,c:1338,i:6433}, "Ramses and the Pharaohs Gold: The Exhibition": {s:1652.31,c:535,i:2519}, "Sea Life Brighton": {s:1539.58,c:916,i:3445}, "SEA LIFE Birmingham": {s:879.29,c:492,i:3351}, "The London Dungeon Entry Ticket": {s:787.24,c:406,i:2855}, "LEGOLAND Windsor": {s:742.55,c:435,i:3160}, "SEA LIFE London Aquarium - Entry Ticket": {s:1168.78,c:573,i:6472}, "Cadbury World Birmingham": {s:691.59,c:607,i:3494}, "The London Eye": {s:823.92,c:145,i:2193}, "London: HMS Belfast Tickets": {s:539.45,c:313,i:1532}, "Uber Boat by Thames Clippers": {s:466.66,c:483,i:3474}, "LEGOLAND Discovery Centre Birmingham": {s:498.62,c:404,i:2029}, "Churchill War Rooms": {s:641.93,c:457,i:4385}, "Westminster Abbey: Entry Ticket": {s:435.63,c:189,i:2303}, "London Zoo: Entry Ticket": {s:434.26,c:211,i:3421}, "Madame Tussauds London - Standard Entry": {s:347.45,c:156,i:1671}, "The Edinburgh Dungeons Entry Ticket": {s:332.58,c:326,i:1785}, "Stonehenge Entry Tickets": {s:315.43,c:193,i:1277}, "St Paul's Cathedral": {s:365.44,c:183,i:1101}, "Moco Museum London: Entry Ticket": {s:304.15,c:104,i:1309}, "Paradox Museum London: Entry Ticket": {s:516.38,c:345,i:2488}, "Lift 109 at Battersea Power Station": {s:290.25,c:165,i:2011}, "Climb Up at The O2": {s:389.64,c:329,i:1681}, "Harry Potter Studio Tours": {s:473.96,c:236,i:1215}, "Tower Bridge Entry Tickets": {s:216.76,c:163,i:1190}, "Shrek's Adventure London Entry Ticket": {s:189.03,c:71,i:594}, "Football Match Europe": {s:394.89,c:204,i:3972}, "SEA LIFE Manchester Entry Ticket": {s:152.49,c:41,i:383}, "Airport Transfers": {s:106.91,c:21,i:321}, "The View from The Shard: Entry Ticket": {s:0,c:0,i:0}}
   },
   "NL": {
-  "week1": {"Anne Frank & Jewish Quarter Guided Tour": {s:479.24,c:638,i:2539}, "THIS IS HOLLAND: Entry Ticket": {s:179.31,c:156,i:921}, "NEMO Science Museum: Entry Ticket": {s:230.93,c:219,i:1038}, "Moco Museum Amsterdam: Entry Ticket": {s:144.38,c:105,i:1089}, "Keukenhof Gardens with transport": {s:320.3,c:240,i:1754}, "Heineken Experience: Entry Ticket": {s:261.7,c:150,i:1669}, "Van Gogh Museum: Entry Ticket": {s:293.52,c:117,i:1121}, "AMAZE: The Immersive Experience": {s:247.86,c:72,i:567}, "Fabrique des Lumières: From Vermeer to Van Gogh": {s:317.5,c:154,i:1068}, "Stedelijk Museum Amsterdam: Entry Ticket": {s:100.26,c:71,i:428}, "Efteling: Entry Ticket": {s:193.43,c:68,i:867}, "The Rembrandt House Museum: Entry Ticket + Multimedia Guide": {s:137.12,c:60,i:396}, "The Upside Down: Entry Ticket": {s:285.53,c:194,i:1369}, "XtraCold Icebar Experience: Skip The Line + 3 Drinks": {s:149.44,c:47,i:560}, "Madame Tussauds Amsterdam: Entry Ticket": {s:139.35,c:66,i:580}},
-  "week2": {"NEMO Science Museum: Entry Ticket": {s:283.24,c:243,i:1009}, "Anne Frank & Jewish Quarter Guided Tour": {s:767.48,c:972,i:4204}, "Keukenhof Gardens with transport": {s:717.71,c:490,i:3945}, "Heineken Experience: Entry Ticket": {s:530.37,c:336,i:2947}, "Moco Museum Amsterdam: Entry Ticket": {s:132.44,c:96,i:749}, "THIS IS HOLLAND: Entry Ticket": {s:167.0,c:190,i:1314}, "Van Gogh Museum: Entry Ticket": {s:330.95,c:127,i:908}, "AMAZE: The Immersive Experience": {s:189.56,c:66,i:528}, "The Upside Down: Entry Ticket": {s:517.42,c:299,i:1996}, "Madame Tussauds Amsterdam: Entry Ticket": {s:135.09,c:67,i:534}, "XtraCold Icebar Experience: Skip The Line + 3 Drinks": {s:126.21,c:60,i:550}, "Stedelijk Museum Amsterdam: Entry Ticket": {s:104.99,c:79,i:469}, "Fabrique des Lumières: Monet, Master of Impressionism": {s:310.47,c:210,i:1384}, "Efteling: Entry Ticket": {s:213.76,c:55,i:660}, "Rembrandts Amsterdam Experience: Entry Ticket": {s:118.15,c:56,i:423}, "A'DAM Lookout: Entry Ticket + Lunch or Dinner": {s:52.84,c:25,i:284}},
-  "week3": {"Anne Frank & Jewish Quarter Guided Tour": {s:674.7,c:735,i:3267}, "NEMO Science Museum: Entry Ticket": {s:336.94,c:264,i:1116}, "Keukenhof Gardens with transport": {s:328.46,c:217,i:1774}, "Moco Museum Amsterdam: Entry Ticket": {s:123.29,c:83,i:714}, "Van Gogh Museum: Entry Ticket": {s:199.63,c:112,i:526}, "THIS IS HOLLAND: Entry Ticket": {s:164.01,c:175,i:1069}, "The Upside Down: Entry Ticket": {s:480.0,c:235,i:1468}, "Rembrandts Amsterdam Experience: Entry Ticket": {s:137.56,c:71,i:474}, "XtraCold Icebar Experience: Skip The Line + 3 Drinks": {s:147.75,c:61,i:499}, "Stedelijk Museum Amsterdam: Entry Ticket": {s:89.76,c:71,i:346}, "Fabrique des Lumières: From Vermeer to Van Gogh": {s:324.67,c:223,i:1361}, "AMAZE: The Immersive Experience": {s:126.61,c:43,i:405}, "Heineken Experience: Entry Ticket": {s:560.08,c:305,i:2655}, "Efteling: Entry Ticket": {s:196.18,c:77,i:667}, "Madame Tussauds Amsterdam: Entry Ticket": {s:145.27,c:76,i:512}, "A'DAM Lookout: Fast Track Ticket + 1 Drink": {s:184.73,c:81,i:1638}},
-  "week4": {"NEMO Science Museum: Entry Ticket": {s:1439.85,c:804,i:3410}, "Fabrique des Lumieres: From Vermeer to Van Gogh": {s:1249.04,c:886,i:4430}, "Heineken Experience: Entry Ticket": {s:1029.3,c:736,i:5425}, "Anne Frank & Jewish Quarter Guided Tour": {s:1005.4,c:873,i:4063}, "The Upside Down: Entry Ticket": {s:591.94,c:309,i:2175}, "Keukenhof Gardens": {s:545.0,c:270,i:2329}, "THIS IS HOLLAND: Entry Ticket": {s:527.15,c:501,i:3484}, "Madame Tussauds Amsterdam: Entry Ticket": {s:486.73,c:194,i:1304}, "Moco Museum Amsterdam: Entry Ticket": {s:432.19,c:227,i:2032}, "ARTIS Amsterdam Royal Zoo: Entry Ticket": {s:393.3,c:226,i:1827}, "A'DAM Lookout: Fast Track Ticket + 1 Drink": {s:252.39,c:119,i:2330}, "Efteling: Entry Ticket": {s:215.67,c:75,i:1077}, "Rembrandts Amsterdam Experience: Entry Ticket": {s:159.81,c:69,i:519}, "AMAZE: The Immersive Experience": {s:157.06,c:60,i:590}, "Van Gogh Museum: Entry Ticket": {s:118.63,c:90,i:490}, "Stedelijk Museum Amsterdam: Entry Ticket": {s:108.52,c:78,i:357}}
+  "week1": {"NEMO Science Museum: Entry Ticket": {s:283.24,c:243,i:1009}, "Anne Frank & Jewish Quarter Guided Tour": {s:767.48,c:972,i:4204}, "Keukenhof Gardens with transport": {s:717.71,c:490,i:3945}, "Heineken Experience: Entry Ticket": {s:530.37,c:336,i:2947}, "Moco Museum Amsterdam: Entry Ticket": {s:132.44,c:96,i:749}, "THIS IS HOLLAND: Entry Ticket": {s:167.0,c:190,i:1314}, "Van Gogh Museum: Entry Ticket": {s:330.95,c:127,i:908}, "AMAZE: The Immersive Experience": {s:189.56,c:66,i:528}, "The Upside Down: Entry Ticket": {s:517.42,c:299,i:1996}, "Madame Tussauds Amsterdam: Entry Ticket": {s:135.09,c:67,i:534}, "XtraCold Icebar Experience: Skip The Line + 3 Drinks": {s:126.21,c:60,i:550}, "Stedelijk Museum Amsterdam: Entry Ticket": {s:104.99,c:79,i:469}, "Fabrique des Lumières: Monet, Master of Impressionism": {s:310.47,c:210,i:1384}, "Efteling: Entry Ticket": {s:213.76,c:55,i:660}, "Rembrandts Amsterdam Experience: Entry Ticket": {s:118.15,c:56,i:423}, "A'DAM Lookout: Entry Ticket + Lunch or Dinner": {s:52.84,c:25,i:284}},
+  "week2": {"Anne Frank & Jewish Quarter Guided Tour": {s:674.7,c:735,i:3267}, "NEMO Science Museum: Entry Ticket": {s:336.94,c:264,i:1116}, "Keukenhof Gardens with transport": {s:328.46,c:217,i:1774}, "Moco Museum Amsterdam: Entry Ticket": {s:123.29,c:83,i:714}, "Van Gogh Museum: Entry Ticket": {s:199.63,c:112,i:526}, "THIS IS HOLLAND: Entry Ticket": {s:164.01,c:175,i:1069}, "The Upside Down: Entry Ticket": {s:480.0,c:235,i:1468}, "Rembrandts Amsterdam Experience: Entry Ticket": {s:137.56,c:71,i:474}, "XtraCold Icebar Experience: Skip The Line + 3 Drinks": {s:147.75,c:61,i:499}, "Stedelijk Museum Amsterdam: Entry Ticket": {s:89.76,c:71,i:346}, "Fabrique des Lumières: From Vermeer to Van Gogh": {s:324.67,c:223,i:1361}, "AMAZE: The Immersive Experience": {s:126.61,c:43,i:405}, "Heineken Experience: Entry Ticket": {s:560.08,c:305,i:2655}, "Efteling: Entry Ticket": {s:196.18,c:77,i:667}, "Madame Tussauds Amsterdam: Entry Ticket": {s:145.27,c:76,i:512}, "A'DAM Lookout: Fast Track Ticket + 1 Drink": {s:184.73,c:81,i:1638}},
+  "week3": {"NEMO Science Museum: Entry Ticket": {s:1439.85,c:804,i:3410}, "Fabrique des Lumieres: From Vermeer to Van Gogh": {s:1249.04,c:886,i:4430}, "Heineken Experience: Entry Ticket": {s:1029.3,c:736,i:5425}, "Anne Frank & Jewish Quarter Guided Tour": {s:1005.4,c:873,i:4063}, "The Upside Down: Entry Ticket": {s:591.94,c:309,i:2175}, "Keukenhof Gardens": {s:545.0,c:270,i:2329}, "THIS IS HOLLAND: Entry Ticket": {s:527.15,c:501,i:3484}, "Madame Tussauds Amsterdam: Entry Ticket": {s:486.73,c:194,i:1304}, "Moco Museum Amsterdam: Entry Ticket": {s:432.19,c:227,i:2032}, "ARTIS Amsterdam Royal Zoo: Entry Ticket": {s:393.3,c:226,i:1827}, "A'DAM Lookout: Fast Track Ticket + 1 Drink": {s:252.39,c:119,i:2330}, "Efteling: Entry Ticket": {s:215.67,c:75,i:1077}, "Rembrandts Amsterdam Experience: Entry Ticket": {s:159.81,c:69,i:519}, "AMAZE: The Immersive Experience": {s:157.06,c:60,i:590}, "Van Gogh Museum: Entry Ticket": {s:118.63,c:90,i:490}, "Stedelijk Museum Amsterdam: Entry Ticket": {s:108.52,c:78,i:357}},
+  "week4": {"NEMO Science Museum: Entry Ticket": {s:1019.83,c:536,i:2147}, "Fabrique des Lumières: From Vermeer to Van Gogh": {s:1040.99,c:724,i:3431}, "Anne Frank & Jewish Quarter Guided Tour": {s:984.77,c:845,i:3857}, "Heineken Experience: Entry Ticket": {s:736.62,c:467,i:3328}, "Keukenhof: Entry + Roundtrip Bus Transfer from A'dam Tower": {s:542.39,c:217,i:1919}, "Moco Museum Amsterdam: Entry Ticket": {s:521.52,c:177,i:1964}, "THIS IS HOLLAND: Entry Ticket": {s:381.22,c:415,i:2438}, "Madame Tussauds Amsterdam: Entry Ticket": {s:396.69,c:116,i:1335}, "ARTIS Amsterdam Royal Zoo: Entry Ticket": {s:309.52,c:169,i:1395}, "The Upside Down: Entry Ticket": {s:450.76,c:226,i:1727}, "A'DAM Lookout: Entry Ticket + Lunch or Dinner": {s:239.95,c:132,i:1801}, "The Amsterdam Dungeon: Entry Ticket": {s:188.86,c:49,i:373}, "Efteling: Entry Ticket": {s:186.12,c:77,i:942}, "Van Gogh Museum: Entry Ticket": {s:171.87,c:101,i:508}, "Rembrandts Amsterdam Experience: Entry Ticket": {s:132.01,c:63,i:427}, "Stedelijk Museum Amsterdam: Entry Ticket": {s:107.03,c:73,i:369}, "Museum Our Lord in the Attic: Entry Ticket + Audio Guide": {s:155.74,c:119,i:670}, "National Holocaust Museum: Entry Ticket": {s:153.62,c:81,i:393}, "AMAZE: The Immersive Experience": {s:135.15,c:40,i:362}, "Tulip Experience Amsterdam: Entry Ticket": {s:0,c:0,i:0}}
   },
   "FR": {
-  "week1": {},
-  "week2": {"Paris: Arc de Triomphe Rooftop Tickets": {s:60.97,c:44,i:284}, "Musée de l'Orangerie: Entry Ticket": {s:83.89,c:59,i:385}, "Musée Rodin: Skip The Line": {s:87.11,c:34,i:251}, "Palace of Versailles: Entry Ticket + Gardens + Estate of Trianon": {s:63.54,c:33,i:303}, "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": {s:65.87,c:25,i:177}},
-  "week3": {"Paris: Arc de Triomphe Rooftop Tickets": {s:213.11,c:143,i:895}, "Musée de l'Orangerie: Entry Ticket": {s:350.27,c:344,i:2170}, "Musée Rodin: Skip The Line": {s:347.73,c:139,i:1072}, "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": {s:213.04,c:101,i:814}, "Centre Pompidou: Exhibition + Rooftop Access": {s:0,c:0,i:0}},
-  "week4": {"Musee Rodin: Skip The Line": {s:2458.85,c:787,i:5808}, "Paris: Arc de Triomphe Rooftop Tickets": {s:1449.86,c:764,i:5590}, "Musee de l'Orangerie: Entry Ticket": {s:940.22,c:580,i:4354}, "Musee de l'Armee - Les Invalides & Napoleon's Tomb: Entry Ticket": {s:477.18,c:270,i:2080}, "Musee d'Orsay Paris Dedicated Entrance": {s:398.61,c:230,i:3853}}
+  "week1": {"Paris: Arc de Triomphe Rooftop Tickets": {s:60.97,c:44,i:284}, "Musée de l'Orangerie: Entry Ticket": {s:83.89,c:59,i:385}, "Musée Rodin: Skip The Line": {s:87.11,c:34,i:251}, "Palace of Versailles: Entry Ticket + Gardens + Estate of Trianon": {s:63.54,c:33,i:303}, "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": {s:65.87,c:25,i:177}},
+  "week2": {"Paris: Arc de Triomphe Rooftop Tickets": {s:213.11,c:143,i:895}, "Musée de l'Orangerie: Entry Ticket": {s:350.27,c:344,i:2170}, "Musée Rodin: Skip The Line": {s:347.73,c:139,i:1072}, "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": {s:213.04,c:101,i:814}, "Centre Pompidou: Exhibition + Rooftop Access": {s:0,c:0,i:0}},
+  "week3": {"Musee Rodin: Skip The Line": {s:2458.85,c:787,i:5808}, "Paris: Arc de Triomphe Rooftop Tickets": {s:1449.86,c:764,i:5590}, "Musee de l'Orangerie: Entry Ticket": {s:940.22,c:580,i:4354}, "Musee de l'Armee - Les Invalides & Napoleon's Tomb: Entry Ticket": {s:477.18,c:270,i:2080}, "Musee d'Orsay Paris Dedicated Entrance": {s:398.61,c:230,i:3853}},
+  "week4": {"Musée Rodin: Skip The Line": {s:1376.6,c:424,i:3876}, "Paris: Arc de Triomphe Rooftop Tickets": {s:1580.24,c:670,i:5513}, "Musée de l'Armée - Les Invalides & Napoleon's Tomb: Entry Ticket": {s:1078.34,c:461,i:4058}, "Musée de l'Orangerie: Entry Ticket": {s:797.11,c:470,i:4976}, "Musée d'Orsay Paris Dedicated Entrance": {s:486.98,c:251,i:4039}}
   }
 };
 
@@ -516,7 +530,7 @@ function sortTable(col) {
 
 function renderTrendChart() {
     if (chartTrend) chartTrend.destroy();
-    const labels = ['Mar 9-15', 'Mar 16-22', 'Mar 23-29', 'Apr 6-12'];
+    const labels = ['Mar 16-22', 'Mar 23-29', 'Apr 6-12', 'Apr 13-19'];
     const revs = [], netRevs = [], spends = [];
     ['week1','week2','week3','week4'].forEach(w => {
         const rows = getRows(w, currentCountry);
